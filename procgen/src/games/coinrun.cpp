@@ -2,6 +2,7 @@
 #include "../assetgen.h"
 #include <set>
 #include <queue>
+#include <string>
 #include "../mazegen.h"
 #include "../cpp-utils.h"
 #include "../qt-utils.h"
@@ -57,6 +58,26 @@ class CoinRun : public BasicAbstractGame {
         out_of_bounds_object = WALL_MID;
     }
 
+    void observe() override {
+        Game::observe();
+        float *buf = (float *)(info_bufs[info_name_to_offset.at("entities")]);
+        int cols = 9;
+        // float buf[256 * 6];
+        for (int i = 0; i < (int)(entities.size()); i++) {
+            auto ent = entities[i];
+            buf[cols*i+0] = ent->type;
+            buf[cols*i+1] = ent->x;
+            buf[cols*i+2] = ent->y;
+            buf[cols*i+3] = ent->vx;
+            buf[cols*i+4] = ent->vy;
+            buf[cols*i+5] = ent->rx;
+            buf[cols*i+6] = ent->ry;
+            buf[cols*i+7] = ent->render_z;
+            buf[cols*i+8] = ent->collides_with_entities;
+            // expire_time (for bullets)
+        }
+    }
+
     void load_background_images() override {
         main_bg_images_ptr = &platform_backgrounds;
     }
@@ -69,7 +90,7 @@ class CoinRun : public BasicAbstractGame {
         return BasicAbstractGame::get_adjusted_image_rect(type, rect);
     }
 
-    void asset_for_type(int type, std::vector<std::string> &names) override {
+    void asset_for_type_normal(int type, std::vector<std::string> &names) {
         if (type == PLAYER) {
             for (const auto &color : PLAYER_THEME_COLORS) {
                 names.push_back("kenney/Players/128x256/" + color + "/alien" + color + "_stand.png");
@@ -117,6 +138,39 @@ class CoinRun : public BasicAbstractGame {
             names.push_back("kenney/Tiles/boxCrate_double.png");
             names.push_back("kenney/Tiles/boxCrate_single.png");
             names.push_back("kenney/Tiles/boxCrate_warning.png");
+        }
+    }
+
+    void asset_for_type_restr(int type, std::vector<std::string> &names) {
+        const std::string color = "Green";
+        const std::string enemy = "mouse";
+        const std::string ground = "Sand";
+        if (type == PLAYER) {
+            names.push_back("kenney/Players/128x256/" + color + "/alien" + color + "_stand.png");
+        } else if (type == PLAYER_JUMP) {
+            names.push_back("kenney/Players/128x256/" + color + "/alien" + color + "_jump.png");
+        } else if (type == PLAYER_RIGHT1 or type == PLAYER_RIGHT2) {
+            names.push_back("kenney/Players/128x256/" + color + "/alien" + color + "_walk1.png");
+        } else if (type == ENEMY1 or type == ENEMY2) {
+            names.push_back("kenney/Enemies/" + enemy + ".png");
+        } else if (type == GOAL) {
+            names.push_back("kenney/Items/coinGold.png");
+        } else if (type == WALL_TOP or type == WALL_MID) {
+            names.push_back("kenney/Ground/" + ground + "/" + to_lower(ground) + "Center.png");
+        } else if (type == LAVA_TOP or type == LAVA_MID) {
+            names.push_back("kenney/Tiles/lava.png");
+        } else if (type == SAW or type == SAW2) {
+            names.push_back("kenney/Enemies/sawHalf.png");
+        } else if (type == CRATE) {
+            names.push_back("kenney/Tiles/boxCrate.png");
+        }
+    }
+
+    void asset_for_type(int type, std::vector<std::string> &names) override {
+        if (options.restrict_themes) {
+            asset_for_type_restr(type, names);
+        } else {
+            asset_for_type_normal(type, names);
         }
     }
 
