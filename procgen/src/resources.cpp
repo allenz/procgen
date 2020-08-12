@@ -13,6 +13,9 @@ std::vector<std::shared_ptr<QImage>> water_surface_backgrounds;
 std::map<std::string, std::shared_ptr<QImage>> sprites;
 
 std::shared_ptr<QImage> get_asset_ptr(std::string relpath) {
+    if(sprites.find(relpath) == sprites.end()) {
+        fatal("get_asset_ptr: couldn't find %s in sprites\n", relpath.c_str());
+    }
     return sprites.at(relpath);
 }
 
@@ -29,6 +32,34 @@ std::shared_ptr<QImage> load_resource_ptr(std::string relpath, QImage::Format fo
 
 void images_load() {
     auto sprite_paths = std::vector<std::string>{
+        "kenney/Players/128x256/Abstract/alienAbstract_jump.png",
+        "kenney/Players/128x256/Abstract/alienAbstract_walk1.png",
+        "kenney/Players/128x256/Abstract/alienAbstract_walk2.png",
+        "kenney/Players/128x256/Abstract/alienAbstract_stand.png",
+        "kenney/Players/128x256/F1/alienF1_jump.png",
+        "kenney/Players/128x256/F1/alienF1_walk1.png",
+        "kenney/Players/128x256/F1/alienF1_walk2.png",
+        "kenney/Players/128x256/F1/alienF1_stand.png",
+        "kenney/Players/128x256/F2/alienF2_jump.png",
+        "kenney/Players/128x256/F2/alienF2_walk1.png",
+        "kenney/Players/128x256/F2/alienF2_walk2.png",
+        "kenney/Players/128x256/F2/alienF2_stand.png",
+        "kenney/Players/128x256/M1/alienM1_jump.png",
+        "kenney/Players/128x256/M1/alienM1_walk1.png",
+        "kenney/Players/128x256/M1/alienM1_walk2.png",
+        "kenney/Players/128x256/M1/alienM1_stand.png",
+        "kenney/Players/128x256/M2/alienM2_jump.png",
+        "kenney/Players/128x256/M2/alienM2_walk1.png",
+        "kenney/Players/128x256/M2/alienM2_walk2.png",
+        "kenney/Players/128x256/M2/alienM2_stand.png",
+        "kenney/Players/128x256/Robot/alienRobot_jump.png",
+        "kenney/Players/128x256/Robot/alienRobot_walk1.png",
+        "kenney/Players/128x256/Robot/alienRobot_walk2.png",
+        "kenney/Players/128x256/Robot/alienRobot_stand.png",
+        "kenney/Players/128x256/Zombie/alienZombie_jump.png",
+        "kenney/Players/128x256/Zombie/alienZombie_walk1.png",
+        "kenney/Players/128x256/Zombie/alienZombie_walk2.png",
+        "kenney/Players/128x256/Zombie/alienZombie_stand.png",
         "kenney/Ground/Planet/planetCorner_left.png",
         "kenney/Ground/Planet/planetHill_left.png",
         "kenney/Ground/Planet/planetHalf_right.png",

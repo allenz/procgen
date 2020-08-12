@@ -30,11 +30,16 @@ const int ENEMY_BARRIER = 19;
 
 const int CRATE = 20;
 
-std::vector<std::string> WALKING_ENEMIES = {"slimeBlock", "slimePurple", "slimeBlue", "slimeGreen", "mouse", "snail", "ladybug", "wormGreen", "wormPink"};
-std::vector<std::string> PLAYER_THEME_COLORS = {"Beige", "Blue", "Green", "Pink", "Yellow"};
-std::vector<std::string> GROUND_THEMES = {"Dirt", "Grass", "Planet", "Sand", "Snow", "Stone"};
+// these must be added to resources.cpp::images_load()
+// also update basic-abstract-game.cpp::MAX_IMAGE_THEMES
+std::vector<std::string> WALKING_ENEMIES = {"slimeBlock", "slimePurple", "slimeBlue", "slimeGreen", "snail", "ladybug", "wormGreen", "wormPink"};
+std::vector<std::string> PLAYER_THEME_COLORS = {"Beige", "Blue", "Pink", "Yellow", "Abstract","F1","F2","M1","M2","Robot","Zombie"};
+std::vector<std::string> GROUND_THEMES = {"Dirt", "Grass", "Planet", "Snow", "Stone"};
+const std::string TEST_ENEMY = "mouse";
+const std::string TEST_PLAYER = "Green";
+const std::string TEST_GROUND = "Sand";
 
-const int NUM_GROUND_THEMES = (int)(GROUND_THEMES.size());
+int NUM_GROUND_THEMES = 1;
 
 class CoinRun : public BasicAbstractGame {
   public:
@@ -56,6 +61,10 @@ class CoinRun : public BasicAbstractGame {
         main_height = 64;
 
         out_of_bounds_object = WALL_MID;
+
+        if(!options.restrict_themes) {
+            NUM_GROUND_THEMES = (int)(GROUND_THEMES.size());
+        }
     }
 
     void observe() override {
@@ -150,21 +159,18 @@ class CoinRun : public BasicAbstractGame {
     }
 
     void asset_for_type_restr(int type, std::vector<std::string> &names) {
-        const std::string color = "Green";
-        const std::string enemy = "mouse";
-        const std::string ground = "Sand";
         if (type == PLAYER) {
-            names.push_back("kenney/Players/128x256/" + color + "/alien" + color + "_stand.png");
+            names.push_back("kenney/Players/128x256/" + TEST_PLAYER + "/alien" + TEST_PLAYER + "_stand.png");
         } else if (type == PLAYER_JUMP) {
-            names.push_back("kenney/Players/128x256/" + color + "/alien" + color + "_jump.png");
+            names.push_back("kenney/Players/128x256/" + TEST_PLAYER + "/alien" + TEST_PLAYER + "_jump.png");
         } else if (type == PLAYER_RIGHT1 or type == PLAYER_RIGHT2) {
-            names.push_back("kenney/Players/128x256/" + color + "/alien" + color + "_walk1.png");
+            names.push_back("kenney/Players/128x256/" + TEST_PLAYER + "/alien" + TEST_PLAYER + "_walk1.png");
         } else if (type == ENEMY1 or type == ENEMY2) {
-            names.push_back("kenney/Enemies/" + enemy + ".png");
+            names.push_back("kenney/Enemies/" + TEST_ENEMY + ".png");
         } else if (type == GOAL) {
             names.push_back("kenney/Items/coinGold.png");
         } else if (type == WALL_TOP or type == WALL_MID) {
-            names.push_back("kenney/Ground/" + ground + "/" + to_lower(ground) + "Center.png");
+            names.push_back("kenney/Ground/" + TEST_GROUND + "/" + to_lower(TEST_GROUND) + "Center.png");
         } else if (type == LAVA_TOP or type == LAVA_MID) {
             names.push_back("kenney/Tiles/lava.png");
         } else if (type == SAW or type == SAW2) {
