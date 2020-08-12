@@ -158,8 +158,8 @@ class BasicAbstractGame : public Game {
     float visibility = 0.0f;
     float min_visibility = 0.0f;
 
-  private:
     Grid<int> grid;
+  private:
 
     QImage *lookup_asset(int img_idx, bool is_reflected = false);
     void initialize_asset_if_necessary(int img_idx);

@@ -224,6 +224,19 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
 
     {
         struct libenv_tensortype s;
+        strcpy(s.name, "grid");
+        s.scalar_type = LIBENV_SCALAR_TYPE_DISCRETE;
+        s.dtype = LIBENV_DTYPE_INT32;
+        s.shape[0] = 64;
+        s.shape[1] = 64;
+        s.ndim = 2,
+        s.low.float32 = 0;
+        s.high.float32 = INT32_MAX;
+        info_types.push_back(s);
+    }
+
+    {
+        struct libenv_tensortype s;
         strcpy(s.name, "rgb");
         s.scalar_type = LIBENV_SCALAR_TYPE_DISCRETE;
         s.dtype = LIBENV_DTYPE_UINT8;

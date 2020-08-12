@@ -60,9 +60,17 @@ class CoinRun : public BasicAbstractGame {
 
     void observe() override {
         Game::observe();
+
+        // info_bufs structs are defined in VecGame::VecGame()
+        // grid is defined in basic-abstract-game and grid.h
+        int *gbuf = (int *)(info_bufs[info_name_to_offset.at("grid")]);
+        std::copy(grid.data.begin(), grid.data.end(), gbuf);
+
         float *buf = (float *)(info_bufs[info_name_to_offset.at("entities")]);
-        int cols = 9;
-        // float buf[256 * 6];
+        int cols = 9; // float buf[256 * 9];
+        for(int i = 0; i < 256*cols; i++) {
+            buf[i] = 0.0;
+        }
         for (int i = 0; i < (int)(entities.size()); i++) {
             auto ent = entities[i];
             buf[cols*i+0] = ent->type;
