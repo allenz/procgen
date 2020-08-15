@@ -72,14 +72,27 @@ class CoinRun : public BasicAbstractGame {
 
         // info_bufs structs are defined in VecGame::VecGame()
         // grid is defined in basic-abstract-game and grid.h
+
+        auto agent = entities[0];
+        float *flow = (float *)(info_bufs[info_name_to_offset.at("flow")]);
+        for(int i = 1; i < 20; i++) {
+            flow[2*(i-1)] = flow[2*i];
+            flow[2*(i-1)+1] = flow[2*i+1];
+        }
+        flow[2*19] = agent->x;
+        flow[2*19+1] = agent->y;
+        float *av = (float *)(info_bufs[info_name_to_offset.at("agent")]);
+        av[0] = agent->vx;
+        av[1] = agent->vy;
+
+        // *(float *)(info_bufs[info_name_to_offset.at("agent_x")]) = agent->x;
+        // *(float *)(info_bufs[info_name_to_offset.at("agent_y")]) = agent->y;
+
         int *gbuf = (int *)(info_bufs[info_name_to_offset.at("grid")]);
         std::copy(grid.data.begin(), grid.data.end(), gbuf);
 
         float *buf = (float *)(info_bufs[info_name_to_offset.at("entities")]);
         int cols = 9; // float buf[256 * 9];
-        for(int i = 0; i < 256*cols; i++) {
-            buf[i] = 0.0;
-        }
         for (int i = 0; i < (int)(entities.size()); i++) {
             auto ent = entities[i];
             buf[cols*i+0] = ent->type;
@@ -93,6 +106,7 @@ class CoinRun : public BasicAbstractGame {
             buf[cols*i+8] = ent->collides_with_entities;
             // expire_time (for bullets)
         }
+        buf[cols*(int)(entities.size())+0] = -1.0;
     }
 
     void load_background_images() override {
@@ -510,6 +524,12 @@ class CoinRun : public BasicAbstractGame {
 
         init_floor_and_walls();
         generate_coin_to_the_right();
+
+        float *flow = (float *)(info_bufs[info_name_to_offset.at("flow")]);
+        for(int i = 0; i < 20; i++) {
+            flow[2*i] = agent->x;
+            flow[2*i+1] = agent->y;
+        }
     }
 
     bool can_support(int obj) {
