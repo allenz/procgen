@@ -72,6 +72,7 @@ void BasicAbstractGame::game_init() {
     asset_num_themes.clear();
 
     basic_assets.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, nullptr);
+    colors.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, nullptr);
     basic_reflections.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, nullptr);
     asset_aspect_ratios.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, 0);
     asset_num_themes.resize(USE_ASSET_THRESHOLD, 0);
@@ -116,6 +117,7 @@ void BasicAbstractGame::initialize_asset_if_necessary(int img_idx) {
     }
 
     basic_assets[img_idx] = asset_ptr;
+    colors[img_idx] = get_color(names[theme]);
     asset_aspect_ratios[img_idx] = aspect_ratio;
     asset_num_themes[type] = num_themes;
 
@@ -454,9 +456,26 @@ int BasicAbstractGame::mask_theme_if_necessary(int theme, int type) {
 }
 
 QColor BasicAbstractGame::color_for_type(int type, int theme) {
+    if(options.use_seg_masks) {
+        int idx = type + theme * MAX_ASSETS;
+        // initialize_asset_if_necessary(idx);
+        if (colors[idx] == nullptr) {
+            std::vector<std::string> names;
+            asset_for_type(type, names);
+            if (names.size() == 0) {
+                reserved_asset_for_type(type, names);
+            }
+            theme = mask_theme_if_necessary(theme, type);
+            fassert(theme < names.size());
+            colors[idx] = get_color(names[theme]);
+        }
+        return colors[idx];
+    }
+
     QColor color;
 
     if (options.use_monochrome_assets) {
+        // coinrun types
         switch(type) {
             case 0:case 9:case 12:case 13: color = QColor(255,255,255); break; // player, ents
             case 1: color = QColor(255,255,0); break; // goal, grid
@@ -893,7 +912,8 @@ void BasicAbstractGame::draw_image(QPainter &p, QRectF &base_rect, float rotatio
         return;
     }
 
-    if (options.use_monochrome_assets || img_type >= USE_ASSET_THRESHOLD) {
+    if (options.use_seg_masks || options.use_monochrome_assets || img_type >= USE_ASSET_THRESHOLD) {
+        int img_idx = img_type + theme * MAX_ASSETS;
         draw_grid_obj(p, base_rect, img_type, theme);
     } else {
         int img_idx = img_type + theme * MAX_ASSETS;

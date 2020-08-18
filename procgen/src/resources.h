@@ -8,9 +8,11 @@ Load assets stored as individual image files
 
 #include <QtGui/QPainter>
 #include <iostream>
+#include <fstream>
 #include <memory>
 
 std::shared_ptr<QImage> get_asset_ptr(std::string relpath);
+QColor get_color(std::string relpath);
 
 extern std::string global_resource_root;
 extern void images_load();

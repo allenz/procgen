@@ -46,6 +46,7 @@ struct GameOptions {
     bool paint_vel_info = false;
     bool use_generated_assets = false;
     bool use_monochrome_assets = false;
+    bool use_seg_masks = false;
     bool restrict_themes = false;
     bool use_backgrounds = true;
     bool center_agent = false;
