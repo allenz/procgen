@@ -18,7 +18,7 @@ const float RENDER_EPS = 0.02f;
 // objects with type higher than this threshold will be rendered with colored grid squares
 const int USE_ASSET_THRESHOLD = 100;
 const int MAX_ASSETS = USE_ASSET_THRESHOLD;
-const int MAX_IMAGE_THEMES = 12;
+const int MAX_IMAGE_THEMES = 30;
 
 BasicAbstractGame::BasicAbstractGame(std::string name)
     : Game(name) {
@@ -917,7 +917,9 @@ void BasicAbstractGame::draw_image(QPainter &p, QRectF &base_rect, float rotatio
         draw_grid_obj(p, base_rect, img_type, theme);
     } else {
         int img_idx = img_type + theme * MAX_ASSETS;
-        fassert(theme < MAX_IMAGE_THEMES);
+        if(theme >= MAX_IMAGE_THEMES) {
+            fatal("draw_image: theme %d >= MAX_IMAGE_THEMES %d for type %d\n", theme, MAX_IMAGE_THEMES, base_type);
+        }
 
         QRectF adjusted_rect = get_adjusted_image_rect(img_type, base_rect);
 

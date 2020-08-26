@@ -91,9 +91,11 @@ class BaseProcgenEnv(CEnv):
         if os.path.exists(lib_dir):
             assert any([os.path.exists(os.path.join(lib_dir, name)) for name in ["libenv.so", "libenv.dylib", "env.dll"]]), "package is installed, but the prebuilt environment library is missing"
             assert not debug, "debug has no effect for pre-compiled library"
-        else:
+        elif debug_mode:
             # only compile if we don't find a pre-built binary
             lib_dir = build(debug=debug)
+        else:
+            lib_dir = os.path.join(SCRIPT_DIR, ".build", "relwithdebinfo")
         
         self.combos = self.get_combos()
 
@@ -212,6 +214,7 @@ class ProcgenGym3Env(BaseProcgenEnv):
         use_backgrounds=True,
         use_seg_masks=False,
         use_monochrome_assets=False,
+        test_theme=False,
         restrict_themes=False,
         use_generated_assets=False,
         paint_vel_info=False,
@@ -240,6 +243,7 @@ class ProcgenGym3Env(BaseProcgenEnv):
                 "use_generated_assets": bool(use_generated_assets),
                 "use_monochrome_assets": bool(use_monochrome_assets),
                 "use_seg_masks": bool(use_seg_masks),
+                "test_theme": bool(test_theme),
                 "restrict_themes": bool(restrict_themes),
                 "use_backgrounds": bool(use_backgrounds),
                 "paint_vel_info": bool(paint_vel_info),

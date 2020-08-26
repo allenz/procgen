@@ -48,23 +48,78 @@ class FruitBotGame : public BasicAbstractGame {
         if (type == PLAYER) {
             names.push_back("misc_assets/robot_3Dblue.png");
         } else if (type == BARRIER || type == OUT_OF_BOUNDS_WALL) {
-            names.push_back("misc_assets/tileStone_slope.png");
+            if(!options.test_theme) {
+                // added
+                names.push_back("kenney/Ground/Sand/sandCenter.png");
+                names.push_back("kenney/Ground/Snow/snowCenter.png");
+                names.push_back("kenney/Ground/Stone/stoneCenter.png");
+                names.push_back("kenney/Ground/Planet/planetCenter.png");
+                names.push_back("kenney/Ground/Grass/grassCenter.png");
+            } else {
+                names.push_back("misc_assets/tileStone_slope.png");
+            }
         } else if (type == PLAYER_BULLET) {
             names.push_back("misc_assets/keyRed2.png");
         } else if (type == BAD_OBJ) {
-            names.push_back("misc_assets/food1.png");
-            names.push_back("misc_assets/food2.png");
-            names.push_back("misc_assets/food3.png");
-            names.push_back("misc_assets/food4.png");
-            names.push_back("misc_assets/food5.png");
-            names.push_back("misc_assets/food6.png");
+            if(!options.test_theme) {
+                names.push_back("misc_assets/food1.png");
+                names.push_back("misc_assets/food2.png");
+                names.push_back("misc_assets/food3.png");
+                names.push_back("misc_assets/food4.png");
+                names.push_back("misc_assets/food5.png");
+                names.push_back("misc_assets/food6.png");
+                // added
+                names.push_back("misc_assets/enemyFloating_1.png");
+                names.push_back("misc_assets/enemyFloating_1b.png");
+                names.push_back("misc_assets/enemyFloating_2.png");
+                names.push_back("misc_assets/enemyFloating_4.png");
+                names.push_back("misc_assets/enemySpikey_1.png");
+                names.push_back("misc_assets/enemySpikey_1b.png");
+
+                names.push_back("misc_assets/meteorBrown_big1.png");
+                names.push_back("misc_assets/meteorBrown_big2.png");
+                names.push_back("misc_assets/meteorBrown_big3.png");
+                names.push_back("misc_assets/meteorBrown_big4.png");
+                names.push_back("misc_assets/meteorGrey_big1.png");
+                names.push_back("misc_assets/meteorGrey_big2.png");
+                names.push_back("misc_assets/meteorGrey_big3.png");
+                names.push_back("misc_assets/meteorGrey_big4.png");
+
+                names.push_back("misc_assets/tank_bigRed.png");
+                names.push_back("misc_assets/tank_blue.png");
+                names.push_back("misc_assets/tank_darkLarge.png");
+                names.push_back("misc_assets/tank_dark.png");
+                names.push_back("misc_assets/tank_green.png");
+                names.push_back("misc_assets/tank_huge.png");
+                names.push_back("misc_assets/tank_red.png");
+                names.push_back("misc_assets/tank_sand.png");
+            } else {
+                // names.push_back("misc_assets/cheese.png");
+                names.push_back("misc_assets/ball_soccer2.png");
+                names.push_back("misc_assets/bomb.png");
+                names.push_back("misc_assets/saw.png");
+            }
         } else if (type == GOOD_OBJ) {
-            names.push_back("misc_assets/fruit1.png");
-            names.push_back("misc_assets/fruit2.png");
-            names.push_back("misc_assets/fruit3.png");
-            names.push_back("misc_assets/fruit4.png");
-            names.push_back("misc_assets/fruit5.png");
-            names.push_back("misc_assets/fruit6.png");
+            if(!options.test_theme) {
+                names.push_back("misc_assets/fruit1.png");
+                names.push_back("misc_assets/fruit2.png");
+                names.push_back("misc_assets/fruit3.png");
+                names.push_back("misc_assets/fruit4.png");
+                names.push_back("misc_assets/fruit5.png");
+                names.push_back("misc_assets/fruit6.png");
+                // added
+                names.push_back("misc_assets/gemBlue.png");
+                names.push_back("misc_assets/gemYellow.png");
+                names.push_back("misc_assets/keyBlue.png");
+                names.push_back("misc_assets/keyGreen.png");
+                names.push_back("misc_assets/keyRed.png");
+            } else {
+                names.push_back("misc_assets/ball_volley2.png");
+                names.push_back("platformer/yellowCrystal.png");
+                names.push_back("platformer/greenCrystal.png");
+                names.push_back("platformer/blueCrystal.png");
+                names.push_back("platformer/redCrystal.png");
+            }
         } else if (type == LOCKED_DOOR) {
             names.push_back("misc_assets/fenceYellow.png");
         } else if (type == LOCK) {
@@ -201,14 +256,15 @@ class FruitBotGame : public BasicAbstractGame {
 
         int min_sep = 4;
         int num_walls = 10;
-        int object_group_size = 6;
+        int good_size = options.test_theme ? 5 : 11;
+        int bad_size = options.test_theme ? 3 : 28;
         int buf_h = 4;
         float door_prob = .125;
         float min_pct = .1;
 
         if (options.distribution_mode == EasyMode) {
             num_walls = 5;
-            object_group_size = 2;
+            // good_size = bad_size = 2;
             door_prob = 0;
             min_pct = .2;
         }
@@ -241,7 +297,7 @@ class FruitBotGame : public BasicAbstractGame {
 
         for (auto ent : entities) {
             if (ent->type == GOOD_OBJ || ent->type == BAD_OBJ) {
-                ent->image_theme = rand_gen.randn(object_group_size);
+                ent->image_theme = rand_gen.randn(ent->type == GOOD_OBJ ? good_size : bad_size);
                 fit_aspect_ratio(ent);
             }
         }
@@ -252,7 +308,7 @@ class FruitBotGame : public BasicAbstractGame {
     void game_step() override {
         BasicAbstractGame::game_step();
 
-        if (special_action == 1 && (cur_time - last_fire_time) >= KEY_DURATION) {
+        if (options.distribution_mode != EasyMode && special_action == 1 && (cur_time - last_fire_time) >= KEY_DURATION) {
             float vx = 0;
             float vy = 1;
             auto new_bullet = add_entity(agent->x, agent->y, vx * bullet_vscale, vy * bullet_vscale, .25, PLAYER_BULLET);
