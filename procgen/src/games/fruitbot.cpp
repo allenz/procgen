@@ -48,82 +48,71 @@ class FruitBotGame : public BasicAbstractGame {
 
     void asset_for_type(int type, std::vector<std::string> &names) override {
         if (type == PLAYER) {
-            names.push_back("misc_assets/robot_3Dblue.png");
+            names.push_back("32/white.png");
         } else if (type == BARRIER || type == OUT_OF_BOUNDS_WALL) {
-            if(!options.test_theme) {
-                // added
-                names.push_back("kenney/Ground/Sand/sandCenter.png");
-                names.push_back("kenney/Ground/Snow/snowCenter.png");
-                names.push_back("kenney/Ground/Stone/stoneCenter.png");
-                names.push_back("kenney/Ground/Planet/planetCenter.png");
-                names.push_back("kenney/Ground/Grass/grassCenter.png");
-            } else {
-                names.push_back("misc_assets/tileStone_slope.png");
-            }
+            names.push_back("32/red.png");
         } else if (type == PLAYER_BULLET) {
             names.push_back("misc_assets/keyRed2.png");
         } else if (type == BAD_OBJ) {
             if(options.test_theme) {
-                names.push_back("animal/1f400.png");
-                names.push_back("animal/1f402.png");
-                names.push_back("animal/1f405.png");
+                names.push_back("32/animal/1f400.png");
+                names.push_back("32/animal/1f402.png");
+                names.push_back("32/animal/1f405.png");
             } else {
-                names.push_back("animal/1f407.png");
-                names.push_back("animal/1f40a.png");
-                names.push_back("animal/1f40b.png");
-                names.push_back("animal/1f40c.png");
-                names.push_back("animal/1f40d.png");
-                names.push_back("animal/1f411.png");
-                names.push_back("animal/1f412.png");
-                names.push_back("animal/1f413.png");
-                names.push_back("animal/1f419.png");
-                names.push_back("animal/1f41b.png");
-                names.push_back("animal/1f41d.png");
-                names.push_back("animal/1f41e.png");
-                names.push_back("animal/1f41f.png");
-                names.push_back("animal/1f421.png");
-                names.push_back("animal/1f424.png");
-                names.push_back("animal/1f426.png");
-                names.push_back("animal/1f427.png");
-                names.push_back("animal/1f429.png");
-                names.push_back("animal/1f42c.png");
-                names.push_back("animal/1f433.png");
+                names.push_back("32/animal/1f407.png");
+                names.push_back("32/animal/1f40a.png");
+                names.push_back("32/animal/1f40b.png");
+                names.push_back("32/animal/1f40c.png");
+                names.push_back("32/animal/1f40d.png");
+                names.push_back("32/animal/1f411.png");
+                names.push_back("32/animal/1f412.png");
+                names.push_back("32/animal/1f413.png");
+                names.push_back("32/animal/1f419.png");
+                names.push_back("32/animal/1f41b.png");
+                names.push_back("32/animal/1f41d.png");
+                names.push_back("32/animal/1f41e.png");
+                names.push_back("32/animal/1f41f.png");
+                names.push_back("32/animal/1f421.png");
+                names.push_back("32/animal/1f424.png");
+                names.push_back("32/animal/1f426.png");
+                names.push_back("32/animal/1f427.png");
+                names.push_back("32/animal/1f429.png");
+                names.push_back("32/animal/1f42c.png");
+                names.push_back("32/animal/1f433.png");
             }
         } else if (type == GOOD_OBJ) {
             if(options.test_theme) {
-                names.push_back("food/1f33d.png");
-                names.push_back("food/1f344.png");
-                names.push_back("food/1f345.png");
+                names.push_back("32/food/1f33d.png");
+                names.push_back("32/food/1f344.png");
+                names.push_back("32/food/1f345.png");
             } else {
-                names.push_back("food/1f346.png");
-                names.push_back("food/1f347.png");
-                names.push_back("food/1f348.png");
-                names.push_back("food/1f349.png");
-                names.push_back("food/1f34a.png");
-                names.push_back("food/1f34b.png");
-                names.push_back("food/1f34c.png");
-                names.push_back("food/1f34d.png");
-                names.push_back("food/1f34e.png");
-                names.push_back("food/1f350.png");
-                names.push_back("food/1f351.png");
-                names.push_back("food/1f352.png");
-                names.push_back("food/1f353.png");
-                names.push_back("food/1f951.png");
-                names.push_back("food/1f952.png");
-                names.push_back("food/1f955.png");
-                names.push_back("food/1f95d.png");
-                names.push_back("food/1f966.png");
-                names.push_back("food/1f96c.png");
-                names.push_back("food/1f96d.png");
+                names.push_back("32/food/1f346.png");
+                names.push_back("32/food/1f347.png");
+                names.push_back("32/food/1f348.png");
+                names.push_back("32/food/1f349.png");
+                names.push_back("32/food/1f34a.png");
+                names.push_back("32/food/1f34b.png");
+                names.push_back("32/food/1f34c.png");
+                names.push_back("32/food/1f34d.png");
+                names.push_back("32/food/1f34e.png");
+                names.push_back("32/food/1f350.png");
+                names.push_back("32/food/1f351.png");
+                names.push_back("32/food/1f352.png");
+                names.push_back("32/food/1f353.png");
+                names.push_back("32/food/1f951.png");
+                names.push_back("32/food/1f952.png");
+                names.push_back("32/food/1f955.png");
+                names.push_back("32/food/1f95d.png");
+                names.push_back("32/food/1f966.png");
+                names.push_back("32/food/1f96c.png");
+                names.push_back("32/food/1f96d.png");
             }
         } else if (type == LOCKED_DOOR) {
             names.push_back("misc_assets/fenceYellow.png");
         } else if (type == LOCK) {
             names.push_back("misc_assets/lockRed2.png");
         } else if (type == PRESENT) {
-            names.push_back("misc_assets/present1.png");
-            names.push_back("misc_assets/present2.png");
-            names.push_back("misc_assets/present3.png");
+            names.push_back("32/red.png");
         }
     }
 
