@@ -63,64 +63,58 @@ class FruitBotGame : public BasicAbstractGame {
         } else if (type == PLAYER_BULLET) {
             names.push_back("misc_assets/keyRed2.png");
         } else if (type == BAD_OBJ) {
-            if(!options.test_theme) {
-                names.push_back("misc_assets/food1.png");
-                names.push_back("misc_assets/food2.png");
-                names.push_back("misc_assets/food3.png");
-                names.push_back("misc_assets/food4.png");
-                names.push_back("misc_assets/food5.png");
-                names.push_back("misc_assets/food6.png");
-                // added
-                names.push_back("misc_assets/enemyFloating_1.png");
-                names.push_back("misc_assets/enemyFloating_1b.png");
-                names.push_back("misc_assets/enemyFloating_2.png");
-                names.push_back("misc_assets/enemyFloating_4.png");
-                names.push_back("misc_assets/enemySpikey_1.png");
-                names.push_back("misc_assets/enemySpikey_1b.png");
-
-                names.push_back("misc_assets/meteorBrown_big1.png");
-                names.push_back("misc_assets/meteorBrown_big2.png");
-                names.push_back("misc_assets/meteorBrown_big3.png");
-                names.push_back("misc_assets/meteorBrown_big4.png");
-                names.push_back("misc_assets/meteorGrey_big1.png");
-                names.push_back("misc_assets/meteorGrey_big2.png");
-                names.push_back("misc_assets/meteorGrey_big3.png");
-                names.push_back("misc_assets/meteorGrey_big4.png");
-
-                names.push_back("misc_assets/tank_bigRed.png");
-                names.push_back("misc_assets/tank_blue.png");
-                names.push_back("misc_assets/tank_darkLarge.png");
-                names.push_back("misc_assets/tank_dark.png");
-                names.push_back("misc_assets/tank_green.png");
-                names.push_back("misc_assets/tank_huge.png");
-                names.push_back("misc_assets/tank_red.png");
-                names.push_back("misc_assets/tank_sand.png");
+            if(options.test_theme) {
+                names.push_back("animal/1f400.png");
+                names.push_back("animal/1f402.png");
+                names.push_back("animal/1f405.png");
             } else {
-                // names.push_back("misc_assets/cheese.png");
-                names.push_back("misc_assets/ball_soccer2.png");
-                names.push_back("misc_assets/bomb.png");
-                names.push_back("misc_assets/saw.png");
+                names.push_back("animal/1f407.png");
+                names.push_back("animal/1f40a.png");
+                names.push_back("animal/1f40b.png");
+                names.push_back("animal/1f40c.png");
+                names.push_back("animal/1f40d.png");
+                names.push_back("animal/1f411.png");
+                names.push_back("animal/1f412.png");
+                names.push_back("animal/1f413.png");
+                names.push_back("animal/1f419.png");
+                names.push_back("animal/1f41b.png");
+                names.push_back("animal/1f41d.png");
+                names.push_back("animal/1f41e.png");
+                names.push_back("animal/1f41f.png");
+                names.push_back("animal/1f421.png");
+                names.push_back("animal/1f424.png");
+                names.push_back("animal/1f426.png");
+                names.push_back("animal/1f427.png");
+                names.push_back("animal/1f429.png");
+                names.push_back("animal/1f42c.png");
+                names.push_back("animal/1f433.png");
             }
         } else if (type == GOOD_OBJ) {
-            if(!options.test_theme) {
-                names.push_back("misc_assets/fruit1.png");
-                names.push_back("misc_assets/fruit2.png");
-                names.push_back("misc_assets/fruit3.png");
-                names.push_back("misc_assets/fruit4.png");
-                names.push_back("misc_assets/fruit5.png");
-                names.push_back("misc_assets/fruit6.png");
-                // added
-                names.push_back("misc_assets/gemBlue.png");
-                names.push_back("misc_assets/gemYellow.png");
-                names.push_back("misc_assets/keyBlue.png");
-                names.push_back("misc_assets/keyGreen.png");
-                names.push_back("misc_assets/keyRed.png");
+            if(options.test_theme) {
+                names.push_back("food/1f33d.png");
+                names.push_back("food/1f344.png");
+                names.push_back("food/1f345.png");
             } else {
-                names.push_back("misc_assets/ball_volley2.png");
-                names.push_back("platformer/yellowCrystal.png");
-                names.push_back("platformer/greenCrystal.png");
-                names.push_back("platformer/blueCrystal.png");
-                names.push_back("platformer/redCrystal.png");
+                names.push_back("food/1f346.png");
+                names.push_back("food/1f347.png");
+                names.push_back("food/1f348.png");
+                names.push_back("food/1f349.png");
+                names.push_back("food/1f34a.png");
+                names.push_back("food/1f34b.png");
+                names.push_back("food/1f34c.png");
+                names.push_back("food/1f34d.png");
+                names.push_back("food/1f34e.png");
+                names.push_back("food/1f350.png");
+                names.push_back("food/1f351.png");
+                names.push_back("food/1f352.png");
+                names.push_back("food/1f353.png");
+                names.push_back("food/1f951.png");
+                names.push_back("food/1f952.png");
+                names.push_back("food/1f955.png");
+                names.push_back("food/1f95d.png");
+                names.push_back("food/1f966.png");
+                names.push_back("food/1f96c.png");
+                names.push_back("food/1f96d.png");
             }
         } else if (type == LOCKED_DOOR) {
             names.push_back("misc_assets/fenceYellow.png");
@@ -258,8 +252,8 @@ class FruitBotGame : public BasicAbstractGame {
 
         int min_sep = 4;
         int num_walls = 10;
-        int good_size = options.test_theme ? 5 : 11;
-        int bad_size = options.test_theme ? 3 : 28;
+        int good_size = options.test_theme ? 3 : 20;
+        int bad_size = options.test_theme ? 3 : 20;
         int buf_h = 4;
         float door_prob = .125;
         float min_pct = .1;
