@@ -5,7 +5,7 @@
 
 const std::string NAME = "fruitbot";
 
-const float COMPLETION_BONUS = 10.0;
+const float COMPLETION_BONUS = 0.0; // 10.0;
 const int POSITIVE_REWARD = 1.0f;
 const int PENALTY = -4.0f;
 
@@ -27,6 +27,8 @@ class FruitBotGame : public BasicAbstractGame {
     float min_dim = 0.0f;
     float bullet_vscale = 0.0f;
     int last_fire_time = 0;
+    bool use_present = true;
+    bool use_barrier = false;
 
     FruitBotGame()
         : BasicAbstractGame(NAME) {
@@ -273,13 +275,15 @@ class FruitBotGame : public BasicAbstractGame {
 
         int curr_h = 0;
 
-        for (int part : partition) {
-            int dy = min_sep + part;
-            curr_h += dy;
+        if(use_barrier) {
+            for (int part : partition) {
+                int dy = min_sep + part;
+                curr_h += dy;
 
-            bool use_door = (dy > 5) && rand_gen.rand01() < door_prob;
+                bool use_door = (dy > 5) && rand_gen.rand01() < door_prob;
 
-            add_walls(curr_h, use_door, min_pct);
+                add_walls(curr_h, use_door, min_pct);
+            }
         }
 
         agent->y = agent->ry;
@@ -287,9 +291,11 @@ class FruitBotGame : public BasicAbstractGame {
         int num_good = rand_gen.randn(10) + 10;
         int num_bad = rand_gen.randn(10) + 10;
 
-        for (int i = 0; i < main_width; i++) {
-            auto present = add_entity_rxy(i + .5, main_height - .5, 0, 0, .5, .5, PRESENT);
-            choose_random_theme(present);
+        if(use_present) {
+            for (int i = 0; i < main_width; i++) {
+                auto present = add_entity_rxy(i + .5, main_height - .5, 0, 0, .5, .5, PRESENT);
+                choose_random_theme(present);
+            }
         }
 
         spawn_entities(num_good, .5, GOOD_OBJ, 0, 0, main_width, main_height);
