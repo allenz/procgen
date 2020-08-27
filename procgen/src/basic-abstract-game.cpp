@@ -52,6 +52,44 @@ BasicAbstractGame::~BasicAbstractGame() {
     }
 }
 
+void BasicAbstractGame::observe() {
+    Game::observe();
+
+    if(get_cells_with_type(PLAYER).size() != 0) {
+        std::cout << "Shouldn't happen!";
+    }
+
+    // info_bufs structs are defined in VecGame::VecGame()
+    // grid is defined in basic-abstract-game and grid.h
+    float *gam = (float *)(info_bufs[info_name_to_offset.at("game")]);
+    gam[0] = grid.h;
+    gam[1] = grid.w;
+    gam[2] = center_x;
+    gam[3] = center_y;
+    gam[4] = visibility;
+
+    int *gbuf = (int *)(info_bufs[info_name_to_offset.at("grid")]);
+    std::copy(grid.data.begin(), grid.data.end(), gbuf);
+
+    float *buf = (float *)(info_bufs[info_name_to_offset.at("entities")]);
+    int cols = 9; // float buf[256 * 9];
+    for (int i = 0; i < (int)(entities.size()); i++) {
+        auto ent = entities[i];
+        buf[cols*i+0] = ent->type;
+        buf[cols*i+1] = ent->x;
+        buf[cols*i+2] = ent->y;
+        buf[cols*i+3] = ent->vx;
+        buf[cols*i+4] = ent->vy;
+        buf[cols*i+5] = ent->rx;
+        buf[cols*i+6] = ent->ry;
+        buf[cols*i+7] = ent->render_z;
+        buf[cols*i+8] = ent->image_theme;
+        // buf[cols*i+8] = ent->collides_with_entities;
+        // expire_time (for bullets)
+    }
+    buf[cols*(int)(entities.size())+0] = -1.0;
+}
+
 void BasicAbstractGame::game_init() {
     if (!options.use_generated_assets) {
         load_background_images();

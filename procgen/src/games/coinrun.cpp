@@ -67,47 +67,24 @@ class CoinRun : public BasicAbstractGame {
         }
     }
 
-    void observe() override {
-        Game::observe();
+    // void observe() override {
+    //     BasicAbstractGame::observe();
 
-        // info_bufs structs are defined in VecGame::VecGame()
-        // grid is defined in basic-abstract-game and grid.h
+    //     auto agent = entities[0];
+    //     float *flow = (float *)(info_bufs[info_name_to_offset.at("flow")]);
+    //     for(int i = 1; i < 20; i++) {
+    //         flow[2*(i-1)] = flow[2*i];
+    //         flow[2*(i-1)+1] = flow[2*i+1];
+    //     }
+    //     flow[2*19] = agent->x;
+    //     flow[2*19+1] = agent->y;
+    //     float *cam = (float *)(info_bufs[info_name_to_offset.at("game")]);
+    //     cam[5] = agent->vx;
+    //     cam[6] = agent->vy;
 
-        auto agent = entities[0];
-        float *flow = (float *)(info_bufs[info_name_to_offset.at("flow")]);
-        for(int i = 1; i < 20; i++) {
-            flow[2*(i-1)] = flow[2*i];
-            flow[2*(i-1)+1] = flow[2*i+1];
-        }
-        flow[2*19] = agent->x;
-        flow[2*19+1] = agent->y;
-        float *av = (float *)(info_bufs[info_name_to_offset.at("agent")]);
-        av[0] = agent->vx;
-        av[1] = agent->vy;
-
-        // *(float *)(info_bufs[info_name_to_offset.at("agent_x")]) = agent->x;
-        // *(float *)(info_bufs[info_name_to_offset.at("agent_y")]) = agent->y;
-
-        int *gbuf = (int *)(info_bufs[info_name_to_offset.at("grid")]);
-        std::copy(grid.data.begin(), grid.data.end(), gbuf);
-
-        float *buf = (float *)(info_bufs[info_name_to_offset.at("entities")]);
-        int cols = 9; // float buf[256 * 9];
-        for (int i = 0; i < (int)(entities.size()); i++) {
-            auto ent = entities[i];
-            buf[cols*i+0] = ent->type;
-            buf[cols*i+1] = ent->x;
-            buf[cols*i+2] = ent->y;
-            buf[cols*i+3] = ent->vx;
-            buf[cols*i+4] = ent->vy;
-            buf[cols*i+5] = ent->rx;
-            buf[cols*i+6] = ent->ry;
-            buf[cols*i+7] = ent->render_z;
-            buf[cols*i+8] = ent->collides_with_entities;
-            // expire_time (for bullets)
-        }
-        buf[cols*(int)(entities.size())+0] = -1.0;
-    }
+    //     // *(float *)(info_bufs[info_name_to_offset.at("agent_x")]) = agent->x;
+    //     // *(float *)(info_bufs[info_name_to_offset.at("agent_y")]) = agent->y;
+    // }
 
     void load_background_images() override {
         main_bg_images_ptr = &platform_backgrounds;

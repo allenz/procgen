@@ -21,6 +21,7 @@ class BasicAbstractGame : public Game {
     ~BasicAbstractGame();
 
     // Game methods
+    void observe() override;
     void game_step() override;
     void game_reset() override;
     void game_draw(QPainter &p, const QRect &rect) override;

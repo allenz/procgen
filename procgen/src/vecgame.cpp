@@ -2,6 +2,7 @@
 #include "cpp-utils.h"
 #include "vecoptions.h"
 #include "game.h"
+#include <cstdio>
 
 const int32_t END_OF_BUFFER = 0xCAFECAFE;
 
@@ -224,10 +225,10 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
 
     {
         struct libenv_tensortype s;
-        strcpy(s.name, "agent");
+        strcpy(s.name, "game");
         s.scalar_type = LIBENV_SCALAR_TYPE_REAL;
         s.dtype = LIBENV_DTYPE_FLOAT32;
-        s.shape[0] = 2;
+        s.shape[0] = 7;
         s.ndim = 1,
         s.low.float32 = -INFINITY;
         s.high.float32 = INFINITY;
@@ -252,8 +253,14 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
         strcpy(s.name, "grid");
         s.scalar_type = LIBENV_SCALAR_TYPE_DISCRETE;
         s.dtype = LIBENV_DTYPE_INT32;
-        s.shape[0] = 64;
-        s.shape[1] = 64;
+        if(env_name == "coinrun")
+            s.shape[0] = s.shape[1] = 64;
+        else if(env_name == "fruitbot") { // only for dist mode easy!
+            s.shape[0] = 60;
+            s.shape[1] = 10;
+        } else {
+            std::cout << "Unrecognized env";
+        }
         s.ndim = 2,
         s.low.float32 = 0;
         s.high.float32 = INT32_MAX;
