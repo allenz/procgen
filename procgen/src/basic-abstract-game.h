@@ -146,6 +146,7 @@ class BasicAbstractGame : public Game {
     bool random_agent_start = true;
     bool has_useful_vel_info = false;
     int step_rand_int = 0;
+    bool was_reset = false;
 
     RandGen asset_rand_gen;
 

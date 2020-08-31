@@ -210,25 +210,19 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
     fassert(num_levels >= 0);
     fassert(start_level >= 0);
 
-    {
-        struct libenv_tensortype s;
-        strcpy(s.name, "flow");
-        s.scalar_type = LIBENV_SCALAR_TYPE_REAL;
-        s.dtype = LIBENV_DTYPE_FLOAT32;
-        s.shape[0] = 20;
-        s.shape[1] = 2;
-        s.ndim = 2,
-        s.low.float32 = -INFINITY;
-        s.high.float32 = INFINITY;
-        info_types.push_back(s);
-    }
-
+    // Set in basic-abstract-game.cpp
+    // [grid.h, grid.w, visibility, agent.vx, agent.vy // obs-aligned
+    //  center_x, center_y, agent.x, agent.y, agent.vx, agent.vy, // reward-aligned
+    //  ent.type, ent.image_theme, ent.x, ent.y] // last collision (or -1 if none)
+    // VecEnv auto resets when an episode finishes. However, we want to associate the
+    // last collision and save_patch info with the state before reset.
+    // For acting, we want info to describe the current observation
     {
         struct libenv_tensortype s;
         strcpy(s.name, "game");
         s.scalar_type = LIBENV_SCALAR_TYPE_REAL;
         s.dtype = LIBENV_DTYPE_FLOAT32;
-        s.shape[0] = 7;
+        s.shape[0] = 15;
         s.ndim = 1,
         s.low.float32 = -INFINITY;
         s.high.float32 = INFINITY;
@@ -266,6 +260,19 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
         s.high.float32 = INT32_MAX;
         info_types.push_back(s);
     }
+
+    // {
+    //     struct libenv_tensortype s;
+    //     strcpy(s.name, "camera");
+    //     s.scalar_type = LIBENV_SCALAR_TYPE_REAL;
+    //     s.dtype = LIBENV_DTYPE_FLOAT32;
+    //     s.shape[0] = 10;
+    //     s.shape[1] = 2;
+    //     s.ndim = 2,
+    //     s.low.float32 = -INFINITY;
+    //     s.high.float32 = INFINITY;
+    //     info_types.push_back(s);
+    // }
 
     {
         struct libenv_tensortype s;

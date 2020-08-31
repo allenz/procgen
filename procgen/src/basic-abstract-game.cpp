@@ -55,19 +55,16 @@ BasicAbstractGame::~BasicAbstractGame() {
 void BasicAbstractGame::observe() {
     Game::observe();
 
-    if(get_cells_with_type(PLAYER).size() != 0) {
-        std::cout << "Shouldn't happen!";
-    }
-
     // info_bufs structs are defined in VecGame::VecGame()
-    // grid is defined in basic-abstract-game and grid.h
     float *gam = (float *)(info_bufs[info_name_to_offset.at("game")]);
     gam[0] = grid.h;
     gam[1] = grid.w;
-    gam[2] = center_x;
-    gam[3] = center_y;
-    gam[4] = visibility;
+    gam[2] = visibility;
+    gam[3] = agent->vx;
+    gam[4] = agent->vy;
+    // other idx are set in game_step():handle_agent_collision()
 
+    // grid is defined in basic-abstract-game and grid.h
     int *gbuf = (int *)(info_bufs[info_name_to_offset.at("grid")]);
     std::copy(grid.data.begin(), grid.data.end(), gbuf);
 
@@ -88,6 +85,15 @@ void BasicAbstractGame::observe() {
         // expire_time (for bullets)
     }
     buf[cols*(int)(entities.size())+0] = -1.0;
+
+    // camera is reset in game_step() after reset. not reward-aligned!
+    // float *camera = (float *)(info_bufs[info_name_to_offset.at("camera")]);
+    // for(int i = 1; i < 10; i++) {
+    //     camera[2*(i-1)] = camera[2*i];
+    //     camera[2*(i-1)+1] = camera[2*i+1];
+    // }
+    // camera[2*9] = center_x;
+    // camera[2*9+1] = center_y;
 }
 
 void BasicAbstractGame::game_init() {
@@ -422,6 +428,11 @@ void BasicAbstractGame::choose_world_dim() {
   The agent collided with this obj. This check is always performed.
 */
 void BasicAbstractGame::handle_agent_collision(const std::shared_ptr<Entity> &obj) {
+    float *gam = (float *)(info_bufs[info_name_to_offset.at("game")]);
+    gam[11] = obj->type;
+    gam[12] = obj->image_theme;
+    gam[13] = obj->x;
+    gam[14] = obj->y;
 }
 
 /*
@@ -753,6 +764,15 @@ void BasicAbstractGame::decay_agent_velocity() {
 }
 
 void BasicAbstractGame::game_step() {
+    float *gam = (float *)(info_bufs[info_name_to_offset.at("game")]);
+    gam[5] = center_x;
+    gam[6] = center_y;
+    gam[7] = gam[13] = agent->x;
+    gam[8] = gam[14] = agent->y;
+    gam[9] = agent->vx;
+    gam[10] = agent->vy;
+    gam[11] = gam[12] = -1;
+
     step_rand_int = rand_gen.randint(0, 1000000);
     move_action = action % 9;
     special_action = 0;

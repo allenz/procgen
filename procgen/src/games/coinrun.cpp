@@ -67,25 +67,6 @@ class CoinRun : public BasicAbstractGame {
         }
     }
 
-    // void observe() override {
-    //     BasicAbstractGame::observe();
-
-    //     auto agent = entities[0];
-    //     float *flow = (float *)(info_bufs[info_name_to_offset.at("flow")]);
-    //     for(int i = 1; i < 20; i++) {
-    //         flow[2*(i-1)] = flow[2*i];
-    //         flow[2*(i-1)+1] = flow[2*i+1];
-    //     }
-    //     flow[2*19] = agent->x;
-    //     flow[2*19+1] = agent->y;
-    //     float *cam = (float *)(info_bufs[info_name_to_offset.at("game")]);
-    //     cam[5] = agent->vx;
-    //     cam[6] = agent->vy;
-
-    //     // *(float *)(info_bufs[info_name_to_offset.at("agent_x")]) = agent->x;
-    //     // *(float *)(info_bufs[info_name_to_offset.at("agent_y")]) = agent->y;
-    // }
-
     void load_background_images() override {
         main_bg_images_ptr = &platform_backgrounds;
     }
@@ -501,12 +482,6 @@ class CoinRun : public BasicAbstractGame {
 
         init_floor_and_walls();
         generate_coin_to_the_right();
-
-        float *flow = (float *)(info_bufs[info_name_to_offset.at("flow")]);
-        for(int i = 0; i < 20; i++) {
-            flow[2*i] = agent->x;
-            flow[2*i+1] = agent->y;
-        }
     }
 
     bool can_support(int obj) {

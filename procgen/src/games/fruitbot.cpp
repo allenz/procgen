@@ -2,6 +2,7 @@
 #include "../assetgen.h"
 #include <set>
 #include <queue>
+#include <cstdio>
 
 const std::string NAME = "fruitbot";
 
