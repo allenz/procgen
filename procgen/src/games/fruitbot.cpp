@@ -55,7 +55,7 @@ class FruitBotGame : public BasicAbstractGame {
         } else if (type == PLAYER_BULLET) {
             names.push_back("misc_assets/keyRed2.png");
         } else if (type == BAD_OBJ) {
-            if(options.test_theme) {
+            if(options.test_theme || options.restrict_themes) {
                 names.push_back("32/animal/1f400.png");
                 names.push_back("32/animal/1f402.png");
                 names.push_back("32/animal/1f405.png");
@@ -82,7 +82,7 @@ class FruitBotGame : public BasicAbstractGame {
                 names.push_back("32/animal/1f433.png");
             }
         } else if (type == GOOD_OBJ) {
-            if(options.test_theme) {
+            if(options.test_theme || options.restrict_themes) {
                 names.push_back("32/food/1f33d.png");
                 names.push_back("32/food/1f344.png");
                 names.push_back("32/food/1f345.png");
