@@ -4,7 +4,8 @@
 #include <queue>
 #include <cstdio>
 
-const std::string NAME = "fruitbot";
+// Fruitbot variant with more themes and no barrier or completion bonus
+const std::string NAME = "foodbot";
 
 const float COMPLETION_BONUS = 0.0; // 10.0;
 const int POSITIVE_REWARD = 1.0f;
@@ -23,7 +24,7 @@ const int KEY_DURATION = 8;
 
 const float DOOR_ASPECT_RATIO = 3.25;
 
-class FruitBotGame : public BasicAbstractGame {
+class FoodBotGame : public BasicAbstractGame {
   public:
     float min_dim = 0.0f;
     float bullet_vscale = 0.0f;
@@ -31,7 +32,7 @@ class FruitBotGame : public BasicAbstractGame {
     bool use_present = true;
     bool use_barrier = false;
 
-    FruitBotGame()
+    FoodBotGame()
         : BasicAbstractGame(NAME) {
         mixrate = .5;
         maxspeed = 0.85f;
@@ -323,4 +324,4 @@ class FruitBotGame : public BasicAbstractGame {
     }
 };
 
-REGISTER_GAME(NAME, FruitBotGame);
+REGISTER_GAME(NAME, FoodBotGame);
