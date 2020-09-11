@@ -917,10 +917,10 @@ void BasicAbstractGame::prepare_for_drawing(float rect_height) {
             visibility = min_visibility;
     }
 
-    float raw_unit = 64 / visibility;
-    unit = raw_unit * (rect_height / 64.0);
+    float raw_unit = RES_W / visibility;
+    unit = raw_unit * (rect_height / RES_W);
 
-    view_dim = 64.0 / raw_unit;
+    view_dim = visibility;
 
     x_off = unit * (center_x - view_dim / 2);
     y_off = unit * (center_y - view_dim / 2);
