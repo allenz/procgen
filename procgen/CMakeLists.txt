@@ -54,6 +54,7 @@ add_library(env
   src/games/climber.cpp
   src/games/coinrun_old.cpp
   src/games/coinrun.cpp
+  src/games/foodbot.cpp
   src/games/fruitbot.cpp
   src/games/heist.cpp
   src/games/jumper.cpp
