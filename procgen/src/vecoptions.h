@@ -20,7 +20,7 @@ class VecOptions {
     void consume_bool(std::string name, bool *value);
     void ensure_empty();
 
-  private:
+  // private:
     std::vector<libenv_option> m_options;
     libenv_option find_option(std::string name, enum libenv_dtype dtype);
 };

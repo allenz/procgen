@@ -190,6 +190,13 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
     opts.consume_string("resource_root", &resource_root);
     opts.consume_bool("render_human", &render_human);
 
+    auto opt = opts.find_option("distribution_mode", LIBENV_DTYPE_INT32);
+    if (opt.data == nullptr) {
+        std::cout << "vecgame.cpp: distribution_mode option not found";
+        fassert(false);
+    }
+    int distribution_mode = static_cast<DistributionMode>(*(int32_t *)opt.data);
+
     std::call_once(global_init_flag, global_init, rand_seed,
                    resource_root);
 
@@ -249,9 +256,9 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
         s.dtype = LIBENV_DTYPE_INT32;
         if(env_name == "coinrun")
             s.shape[0] = s.shape[1] = 64;
-        else if(env_name == "fruitbot") { // only for dist mode easy!
+        else if(env_name == "fruitbot" || env_name == "foodbot") { // only for dist mode easy!
             s.shape[0] = 60;
-            s.shape[1] = 10;
+            s.shape[1] = (env_name == "fruitbot" && distribution_mode == HardMode) ? 20 : 10;
         } else {
             std::cout << "Unrecognized env";
         }
