@@ -254,11 +254,26 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
         strcpy(s.name, "grid");
         s.scalar_type = LIBENV_SCALAR_TYPE_DISCRETE;
         s.dtype = LIBENV_DTYPE_INT32;
-        if(env_name == "coinrun")
+        // s.shape = [main_height, main_width];
+        s.shape[0] = s.shape[1] = 64;
+        if(env_name == "coinrun") {
             s.shape[0] = s.shape[1] = 64;
-        else if(env_name == "fruitbot" || env_name == "foodbot") { // only for dist mode easy!
+        } else if(env_name == "foodbot") {
+            s.shape[0] = 60; s.shape[1] = 10;
+        } else if(env_name == "fruitbot") {
             s.shape[0] = 60;
-            s.shape[1] = (env_name == "fruitbot" && distribution_mode == HardMode) ? 20 : 10;
+            switch(distribution_mode){
+                case EasyMode: s.shape[1] = 10; break;
+                case HardMode: s.shape[1] = 20; break;
+                default: std::cout << "vecgame.cpp fruitbot: unknown mode";
+            }
+        } else if(env_name == "leaper") {
+            switch(distribution_mode){
+                case EasyMode: s.shape[0] = s.shape[1] = 9; break;
+                case HardMode: s.shape[0] = s.shape[1] = 15; break;
+                case ExtremeMode: s.shape[0] = s.shape[1] = 20; break;
+                default: std::cout << "vecgame.cpp leaper: unknown mode";
+            }
         } else {
             std::cout << "Unrecognized env";
         }
