@@ -274,6 +274,15 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
                 case ExtremeMode: s.shape[0] = s.shape[1] = 20; break;
                 default: std::cout << "vecgame.cpp leaper: unknown mode";
             }
+        } else if(env_name == "climber") {
+            s.shape[0] = 64;
+            s.shape[1] = distribution_mode == EasyMode ? 16 : 20;
+        } else if(env_name == "jumper") {
+            switch(distribution_mode){
+                case HardMode: s.shape[0] = s.shape[1] = 40; break;
+                case MemoryMode: s.shape[0] = s.shape[1] = 45; break;
+                default: s.shape[0] = s.shape[1] = 20;
+            }
         } else {
             std::cout << "Unrecognized env";
         }

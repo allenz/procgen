@@ -85,6 +85,17 @@ class Climber : public BasicAbstractGame {
         }
     }
 
+    int get_valence(int type) override {
+        switch(type) {
+            case PLAYER:case PLAYER_JUMP:case PLAYER_RIGHT1:case PLAYER_RIGHT2: return 3;
+            case WALL_TOP:case WALL_MID: return 1;
+            case COIN: return 2;
+            case ENEMY: case ENEMY1:case ENEMY2: return 0;
+            case ENEMY_BARRIER: return 4;
+            default: fatal("climber get_valence: unknown type %d\n", type);
+        }
+    }
+
     void handle_agent_collision(const std::shared_ptr<Entity> &obj) override {
         BasicAbstractGame::handle_agent_collision(obj);
 

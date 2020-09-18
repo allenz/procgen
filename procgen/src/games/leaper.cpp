@@ -66,6 +66,16 @@ class LeaperGame : public BasicAbstractGame {
         }
     }
 
+    int get_valence(int type) override {
+        switch(type) {
+            case PLAYER: return 3;
+            case FINISH_LINE: return 2;
+            case CAR:case WATER: return 0;
+            case ROAD:case LOG: return 4;
+            default: fatal("leaper get_valence: unknown type %d\n", type);
+        }
+    }
+
     float get_tile_aspect_ratio(const std::shared_ptr<Entity> &ent) override {
         if (ent->type == FINISH_LINE) {
             return 1;

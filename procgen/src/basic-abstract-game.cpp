@@ -504,7 +504,24 @@ int BasicAbstractGame::mask_theme_if_necessary(int theme, int type) {
     return theme;
 }
 
+int BasicAbstractGame::get_valence(int type) {
+    fatal("basic-abstract-game: get_valence() must be overriden");
+}
+
 QColor BasicAbstractGame::color_for_type(int type, int theme) {
+    if(options.use_valence) {
+        int c;
+        switch(get_valence(type)) {
+            case 0: c = 153; break; // bad
+            case 1: c = 102; break; // neutral, collidable
+            case 2: c = 204; break; // good
+            case 3: c = 255; break; // player
+            case 4: c = 51; break;  // non-blocking
+            default: std::cout << "basic-abstract-game.cpp: Unknown valence " << c << " for type " << type;
+        }
+        return QColor(c, c, c);
+    }
+
     if(options.use_seg_masks) {
         int idx = type + theme * MAX_ASSETS;
         // initialize_asset_if_necessary(idx);
@@ -522,37 +539,24 @@ QColor BasicAbstractGame::color_for_type(int type, int theme) {
     }
 
     QColor color;
-
     if (options.use_monochrome_assets) {
-        // coinrun types
-        switch(type) {
-            case 0:case 9:case 12:case 13: color = QColor(255,255,255); break; // player, ents
-            case 1: color = QColor(255,255,0); break; // goal, grid
-            case 15:case 16: color = QColor(144,144,144); break; // wall, grid
-            case 20: color = QColor(80,80,80); break; // crate, ents (enemies pass through)
-            case 2:case 3: color = QColor(255,0,0); break; // saw, ents
-            case 17:case 18: color = QColor(255,0,0); break; // lava, grid
-            case 5:case 6:case 7: color = QColor(255,0,255); break; // mobile enemy, ents
-            case 59: color = QColor(255,96,0); break; // trail, ents, see object-ids.h
-            default: std::printf("Unknown type %d\n", type); fassert(false);
-        }
-        // theme = mask_theme_if_necessary(theme, type);
+        theme = mask_theme_if_necessary(theme, type);
 
-        // int k = 4;
-        // int kcubed = k * k * k;
-        // int chunk = 256 / k;
-        // fassert(type < kcubed);
+        int k = 4;
+        int kcubed = k * k * k;
+        int chunk = 256 / k;
+        fassert(type < kcubed);
 
-        // int p1 = 29;
-        // int p2 = 19;
-        // // kcubed, p1, and p2 should be relatively prime
-        // // there will be no type collisons for a fixed theme
-        // // there will be no theme collisions for a fixed type
-        // // unique (type, theme) pairs might collide, but this is unlikely to be very relevant
-        // int new_type = (p1 * (type + 1)) % kcubed;
-        // new_type = (new_type + p2 * theme) % kcubed;
+        int p1 = 29;
+        int p2 = 19;
+        // kcubed, p1, and p2 should be relatively prime
+        // there will be no type collisons for a fixed theme
+        // there will be no theme collisions for a fixed type
+        // unique (type, theme) pairs might collide, but this is unlikely to be very relevant
+        int new_type = (p1 * (type + 1)) % kcubed;
+        new_type = (new_type + p2 * theme) % kcubed;
 
-        // color = QColor(chunk * (new_type / (k * k) + 1) - 1, chunk * ((new_type / k) % k + 1) - 1, chunk * (new_type % k + 1) - 1);
+        color = QColor(chunk * (new_type / (k * k) + 1) - 1, chunk * ((new_type / k) % k + 1) - 1, chunk * (new_type % k + 1) - 1);
     } else {
         fassert(false);
     }
@@ -970,7 +974,7 @@ void BasicAbstractGame::draw_image(QPainter &p, QRectF &base_rect, float rotatio
         return;
     }
 
-    if (options.use_seg_masks || options.use_monochrome_assets || img_type >= USE_ASSET_THRESHOLD) {
+    if (options.use_seg_masks || options.use_valence || options.use_monochrome_assets || img_type >= USE_ASSET_THRESHOLD) {
         int img_idx = img_type + theme * MAX_ASSETS;
         draw_grid_obj(p, base_rect, img_type, theme);
     } else {

@@ -46,6 +46,7 @@ class BasicAbstractGame : public Game {
     virtual int image_for_type(int grid_obj);
     virtual int theme_for_grid_obj(int type);
     virtual bool should_preserve_type_themes(int type);
+    virtual int get_valence(int type);
     virtual QColor color_for_type(int type, int theme);
     virtual void draw_grid_obj(QPainter &p, const QRectF &rect, int type, int theme);
     virtual void choose_world_dim();

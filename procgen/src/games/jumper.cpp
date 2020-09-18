@@ -77,6 +77,17 @@ class Jumper : public BasicAbstractGame {
         }
     }
 
+    int get_valence(int type) override {
+        switch(type) {
+            case PLAYER:case PLAYER_JUMP:case PLAYER_RIGHT1:case PLAYER_RIGHT2:case PLAYER_LEFT1:case PLAYER_LEFT2:  return 3;
+            case GOAL: return 2;
+            case CAVEWALL:case CAVEWALL_TOP: return 1;
+            case SPIKE: return 0;
+            case TRAIL: return 4;
+            default: fatal("%s get_valence: unknown type %d\n", NAME, type);
+        }
+    }
+
     void handle_agent_collision(const std::shared_ptr<Entity> &obj) override {
         BasicAbstractGame::handle_agent_collision(obj);
 
@@ -134,7 +145,28 @@ class Jumper : public BasicAbstractGame {
         return BasicAbstractGame::image_for_type(type);
     }
 
-    void draw_compass(QPainter &p, const QRect &rect) {
+    void draw_compass_valence(QPainter &p, const QRect &rect) {
+        QColor color = QColor(51, 51, 51);
+
+        QRectF compass_rect = get_abs_rect(view_dim - compass_dim - .25, .25, compass_dim, compass_dim);
+        float cx = compass_rect.center().x();
+        float cy = compass_rect.center().y();
+        float cr = compass_rect.width() / 2 * .95;
+        float theta = get_theta(agent, goal);
+        float dx = cr * cos(theta);
+        float dy = cr * sin(theta);
+        float minx = std::min(cx, cx + dx);
+        float miny = std::min(cy, cy - dy);
+        p.fillRect(minx, miny, std::abs(dx), std::abs(dy), color);
+
+        float dist = get_distance(agent, goal);
+        float dist_pct = dist / (main_width * sqrt(2));
+        float bar_thickness = compass_dim / 8;
+        QRectF dist_rect = get_abs_rect(view_dim - compass_dim - .25, .25 + compass_dim, compass_dim * dist_pct, bar_thickness);
+        p.fillRect(dist_rect, color);
+    }
+
+    void draw_compass_normal(QPainter &p, const QRect &rect) {
         QRectF compass_rect = get_abs_rect(view_dim - compass_dim - .25, .25, compass_dim, compass_dim);
         QColor clock_color = QColor(168, 166, 158);
 
@@ -166,6 +198,11 @@ class Jumper : public BasicAbstractGame {
             p.setPen(Qt::NoPen);
             p.drawEllipse(QRect(r1.x(), r1.y() + r1.height() * (5.0 / 6), r1.width(), r1.height() / 3));
         }
+    }
+
+    void draw_compass(QPainter &p, const QRect &rect) {
+        if(options.use_valence) draw_compass_valence(p, rect);
+        else draw_compass_normal(p, rect);
     }
 
     void game_draw(QPainter &p, const QRect &rect) override {

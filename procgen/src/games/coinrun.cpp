@@ -120,6 +120,33 @@ class CoinRun : public BasicAbstractGame {
         }
     }
 
+    QColor get_category(int type) {
+        QColor color;
+        switch(type) {
+            case 0:case 9:case 12:case 13: color = QColor(255,255,255); break; // player, ents
+            case 1: color = QColor(255,255,0); break; // goal, grid
+            case 15:case 16: color = QColor(144,144,144); break; // wall, grid
+            case 20: color = QColor(80,80,80); break; // crate, ents (enemies pass through)
+            case 2:case 3: color = QColor(255,0,0); break; // saw, ents
+            case 17:case 18: color = QColor(255,0,0); break; // lava, grid
+            case 5:case 6:case 7: color = QColor(255,0,255); break; // mobile enemy, ents
+            case 59: color = QColor(255,96,0); break; // trail, ents, see object-ids.h
+            default: fatal("coinrun get_category: unknown type %d\n", type);
+        }
+        return color;
+    }
+
+    int get_valence(int type) override {
+        switch(type) {
+            case 0:case 9:case 12:case 13: return 3;
+            case 1: return 2;
+            case 15:case 16:case 20: return 1;
+            case 2:case 3:case 17:case 18:case 5:case 6:case 7: return 0;
+            case 59: return 4;
+            default: fatal("coinrun get_valence: unknown type %d\n", type);
+        }
+    }
+
     void handle_agent_collision(const std::shared_ptr<Entity> &obj) override {
         BasicAbstractGame::handle_agent_collision(obj);
 

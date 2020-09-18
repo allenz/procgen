@@ -46,6 +46,7 @@ void Game::parse_options(std::string name, VecOptions opts) {
     opts.consume_bool("use_monochrome_assets", &options.use_monochrome_assets);
     opts.consume_bool("test_theme", &options.test_theme);
     opts.consume_bool("use_seg_masks", &options.use_seg_masks);
+    opts.consume_bool("use_valence", &options.use_valence);
     opts.consume_bool("restrict_themes", &options.restrict_themes);
     opts.consume_bool("use_backgrounds", &options.use_backgrounds);
     opts.consume_bool("center_agent", &options.center_agent);
