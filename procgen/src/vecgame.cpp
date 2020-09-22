@@ -217,6 +217,12 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
     fassert(num_levels >= 0);
     fassert(start_level >= 0);
 
+    std::vector<std::string> env_names = split(env_name, ",");
+
+    num_joint_games = (int)(env_names.size());
+
+    fassert(num_envs % num_joint_games == 0);
+
     // Set in basic-abstract-game.cpp
     // [grid.h, grid.w, visibility, agent.vx, agent.vy // obs-aligned
     //  center_x, center_y, agent.x, agent.y, agent.vx, agent.vy, // reward-aligned
@@ -256,7 +262,9 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
         s.dtype = LIBENV_DTYPE_INT32;
         // s.shape = [main_height, main_width];
         s.shape[0] = s.shape[1] = 64;
-        if(env_name == "coinrun") {
+        if(num_joint_games != 1) {
+            s.shape[0] = s.shape[1] = 64;
+        } else if(env_name == "coinrun") {
             s.shape[0] = s.shape[1] = 64;
         } else if(env_name == "foodbot") {
             s.shape[0] = 60; s.shape[1] = 10;
@@ -284,7 +292,7 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
                 default: s.shape[0] = s.shape[1] = 20;
             }
         } else {
-            std::cout << "Unrecognized env";
+            std::cout << "Unrecognized env " << env_name << "\n";
         }
         s.ndim = 2,
         s.low.float32 = 0;
@@ -387,12 +395,6 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
         level_seed_low = start_level;
         level_seed_high = start_level + num_levels;
     }
-
-    std::vector<std::string> env_names = split(env_name, ",");
-
-    num_joint_games = (int)(env_names.size());
-
-    fassert(num_envs % num_joint_games == 0);
 
     RandGen game_level_seed_gen;
     game_level_seed_gen.seed(rand_seed);
