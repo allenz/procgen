@@ -117,6 +117,17 @@ class FoodBotGame : public BasicAbstractGame {
         }
     }
 
+    int get_valence(int type) override {
+        switch(type) {
+            case PLAYER: return 3;
+            case GOOD_OBJ:case PRESENT: return 2;
+            case OUT_OF_BOUNDS_WALL: return 1;
+            case BAD_OBJ:case BARRIER:case LOCKED_DOOR:case LOCK: return 0;
+            case PLAYER_BULLET: return 4;
+            default: fatal("fruitbot get_valence: unknown type %d\n", type);
+        }
+    }
+
     bool will_reflect(int src, int target) override {
         return BasicAbstractGame::will_reflect(src, target) || (src == BAD_OBJ && (target == BARRIER || target == WALL_OBJ));
     }

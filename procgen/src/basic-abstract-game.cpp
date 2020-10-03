@@ -2,6 +2,7 @@
 #include "resources.h"
 #include "assetgen.h"
 #include "qt-utils.h"
+#include <cstdlib>
 
 const float MAXVTHETA = 15 * PI / 180;
 const float MIXRATEROT = 0.5f;
@@ -504,7 +505,8 @@ int BasicAbstractGame::mask_theme_if_necessary(int theme, int type) {
 }
 
 int BasicAbstractGame::get_valence(int type) {
-    fatal("basic-abstract-game: get_valence() must be overriden");
+    printf("basic-abstract-game: get_valence() must be overriden\n");
+    std::abort();
 }
 
 QColor BasicAbstractGame::color_for_type(int type, int theme) {
