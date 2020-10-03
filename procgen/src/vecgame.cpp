@@ -2,7 +2,6 @@
 #include "cpp-utils.h"
 #include "vecoptions.h"
 #include "game.h"
-#include <cstdio>
 
 const int32_t END_OF_BUFFER = 0xCAFECAFE;
 
@@ -190,12 +189,13 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
     opts.consume_string("resource_root", &resource_root);
     opts.consume_bool("render_human", &render_human);
 
-    auto opt = opts.find_option("distribution_mode", LIBENV_DTYPE_INT32);
-    if (opt.data == nullptr) {
-        std::cout << "vecgame.cpp: distribution_mode option not found";
-        fassert(false);
+    int dist = -1;
+    for(auto opt: opts.m_options) {
+        if((std::string)opt.name == "distribution_mode" && opt.data != nullptr)
+            dist = *(int *)opt.data;
     }
-    int distribution_mode = static_cast<DistributionMode>(*(int32_t *)opt.data);
+    fassert(dist != -1); // distribution_mode option not found
+    int distribution_mode = static_cast<DistributionMode>(dist);
 
     std::call_once(global_init_flag, global_init, rand_seed,
                    resource_root);
@@ -273,14 +273,14 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
             switch(distribution_mode){
                 case EasyMode: s.shape[1] = 10; break;
                 case HardMode: s.shape[1] = 20; break;
-                default: std::cout << "vecgame.cpp fruitbot: unknown mode";
+                default: printf("vecgame.cpp fruitbot: unknown mode\n");
             }
         } else if(env_name == "leaper") {
             switch(distribution_mode){
                 case EasyMode: s.shape[0] = s.shape[1] = 9; break;
                 case HardMode: s.shape[0] = s.shape[1] = 15; break;
                 case ExtremeMode: s.shape[0] = s.shape[1] = 20; break;
-                default: std::cout << "vecgame.cpp leaper: unknown mode";
+                default: printf("vecgame.cpp leaper: unknown mode");
             }
         } else if(env_name == "climber") {
             s.shape[0] = 64;
@@ -292,7 +292,7 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
                 default: s.shape[0] = s.shape[1] = 20;
             }
         } else {
-            std::cout << "Unrecognized env " << env_name << "\n";
+            printf("Unrecognized env %s\n", env_name.c_str());
         }
         s.ndim = 2,
         s.low.float32 = 0;

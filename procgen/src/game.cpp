@@ -52,8 +52,9 @@ void Game::parse_options(std::string name, VecOptions opts) {
     opts.consume_bool("center_agent", &options.center_agent);
     opts.consume_bool("use_sequential_levels", &options.use_sequential_levels);
 
-    int dist_mode = EasyMode;
+    int dist_mode = -1;
     opts.consume_int("distribution_mode", &dist_mode);
+    if(dist_mode == -1) fatal("game.cpp: missing option distribution_mode\n");
     options.distribution_mode = static_cast<DistributionMode>(dist_mode);
 
     if (options.distribution_mode == EasyMode) {

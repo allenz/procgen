@@ -2,7 +2,6 @@
 #include "../assetgen.h"
 #include <set>
 #include <queue>
-#include <cstdio>
 
 // Fruitbot variant with more themes and no barrier or completion bonus
 const std::string NAME = "foodbot";

@@ -2,7 +2,6 @@
 #include "resources.h"
 #include "assetgen.h"
 #include "qt-utils.h"
-#include <cstdio>
 
 const float MAXVTHETA = 15 * PI / 180;
 const float MIXRATEROT = 0.5f;
@@ -517,7 +516,6 @@ QColor BasicAbstractGame::color_for_type(int type, int theme) {
             case 2: c = 204; break; // good
             case 3: c = 255; break; // player
             case 4: c = 51; break;  // non-blocking
-            default: std::cout << "basic-abstract-game.cpp: Unknown valence " << c << " for type " << type;
         }
         return QColor(c, c, c);
     }
