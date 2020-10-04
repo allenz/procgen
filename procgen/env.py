@@ -81,7 +81,7 @@ class BaseProcgenEnv(CEnv):
         debug_mode=0,
         resource_root=None,
         num_threads=4,
-        render_mode=None,
+        render_mode=0,
     ):
         if resource_root is None:
             resource_root = os.path.join(SCRIPT_DIR, "data", "assets") + os.sep
@@ -100,11 +100,12 @@ class BaseProcgenEnv(CEnv):
         self.combos = self.get_combos()
 
         if render_mode is None:
-            render_human = False
+            render_human = 0
         elif render_mode == "rgb_array":
-            render_human = True
+            render_human = 512
         else:
-            raise Exception(f"invalid render mode {render_mode}")
+            render_human = render_mode
+        assert type(render_human) == int
 
         if rand_seed is None:
             rand_seed = create_random_seed()

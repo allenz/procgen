@@ -26,7 +26,7 @@ class VecGame {
     int num_envs;
     int num_joint_games;
     int num_actions;
-    bool render_human;
+    int render_human;
 
     std::vector<std::shared_ptr<Game>> games;
 

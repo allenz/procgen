@@ -167,7 +167,7 @@ inline uint32_t hash_str_uint32(const std::string &str) {
 }
 
 VecGame::VecGame(int _nenvs, VecOptions opts) {
-    render_human = false;
+    render_human = -1;
     num_envs = _nenvs;
     games.resize(num_envs);
     std::string env_name;
@@ -187,7 +187,8 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
     opts.consume_int("rand_seed", &rand_seed);
     opts.consume_int("num_threads", &num_threads);
     opts.consume_string("resource_root", &resource_root);
-    opts.consume_bool("render_human", &render_human);
+    opts.consume_int("render_human", &render_human);
+    fassert(render_human != -1); // option not found
 
     int dist = -1;
     for(auto opt: opts.m_options) {
@@ -376,8 +377,8 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
         strcpy(s.name, "rgb");
         s.scalar_type = LIBENV_SCALAR_TYPE_DISCRETE;
         s.dtype = LIBENV_DTYPE_UINT8;
-        s.shape[0] = RENDER_RES;
-        s.shape[1] = RENDER_RES;
+        s.shape[0] = render_human;
+        s.shape[1] = render_human;
         s.shape[2] = 3;
         s.ndim = 3,
         s.low.uint8 = 0;
@@ -463,12 +464,12 @@ void VecGame::observe() {
     // at this point all games belong to the python thread
 
     if (render_human) {
-        uint8_t render_hires_buf[RENDER_RES * RENDER_RES * 4];
+        uint8_t render_hires_buf[render_human * render_human * 4];
 
         for (int e = 0; e < num_envs; e++) {
             const auto &game = games[e];
-            game->render_to_buf(render_hires_buf, RENDER_RES, RENDER_RES, true);
-            bgr32_to_rgb888(game->info_bufs[game->info_name_to_offset.at("rgb")], render_hires_buf, RENDER_RES, RENDER_RES);
+            game->render_to_buf(render_hires_buf, render_human, render_human, true);
+            bgr32_to_rgb888(game->info_bufs[game->info_name_to_offset.at("rgb")], render_hires_buf, render_human, render_human);
         }
     }
 }
