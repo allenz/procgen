@@ -468,7 +468,7 @@ void VecGame::observe() {
 
         for (int e = 0; e < num_envs; e++) {
             const auto &game = games[e];
-            game->render_to_buf(render_hires_buf, render_human, render_human, true);
+            game->render_to_buf(render_hires_buf, render_human, render_human, true, true);
             bgr32_to_rgb888(game->info_bufs[game->info_name_to_offset.at("rgb")], render_hires_buf, render_human, render_human);
         }
     }

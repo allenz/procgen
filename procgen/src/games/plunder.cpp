@@ -63,8 +63,8 @@ class PlunderGame : public BasicAbstractGame {
         }
     }
 
-    void game_draw(QPainter &p, const QRect &rect) override {
-        BasicAbstractGame::game_draw(p, rect);
+    void game_draw(QPainter &p, const QRect &rect, bool is_info) override {
+        BasicAbstractGame::game_draw(p, rect, is_info);
 
         QColor juice_color = QColor(66, 245, 135);
         QColor progress_color = QColor(245, 66, 144);

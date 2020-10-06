@@ -78,20 +78,20 @@ void Game::parse_options(std::string name, VecOptions opts) {
     opts.ensure_empty();
 }
 
-void Game::render_to_buf(void *dst, int w, int h, bool antialias) {
+void Game::render_to_buf(void *dst, int w, int h, bool is_info, bool antialias) {
     // Qt focuses on RGB32 performance:
     // https://doc.qt.io/qt-5/qpainter.html#performance
     // so render to an RGB32 buffer and then convert it rather than render to RGB888 directly
     QImage img((uchar *)dst, w, h, w * 4, QImage::Format_RGB32);
     QPainter p(&img);
 
-    if (antialias) {
-        p.setRenderHint(QPainter::Antialiasing, true);
-        p.setRenderHint(QPainter::SmoothPixmapTransform, true);
-    }
+    // if (antialias) {
+    //     p.setRenderHint(QPainter::Antialiasing, true);
+    //     p.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    // }
 
     QRect rect = QRect(0, 0, w, h);
-    game_draw(p, rect);
+    game_draw(p, rect, is_info);
 }
 
 void Game::reset() {
@@ -159,7 +159,7 @@ void Game::step() {
 }
 
 void Game::observe() {
-    render_to_buf(render_buf, RES_W, RES_H, false);
+    render_to_buf(render_buf, RES_W, RES_H, false, false);
     bgr32_to_rgb888(obs_bufs[0], render_buf, RES_W, RES_H);
     *reward_ptr = step_data.reward;
     *first_ptr = (uint8_t)step_data.done;

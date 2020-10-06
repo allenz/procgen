@@ -163,8 +163,8 @@ class Ninja : public BasicAbstractGame {
         return BasicAbstractGame::image_for_type(type);
     }
 
-    void game_draw(QPainter &p, const QRect &rect) override {
-        BasicAbstractGame::game_draw(p, rect);
+    void game_draw(QPainter &p, const QRect &rect, bool is_info) override {
+        BasicAbstractGame::game_draw(p, rect, is_info);
 
         QColor charge_color = QColor(66, 245, 135);
 

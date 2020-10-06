@@ -112,7 +112,7 @@ class Game {
     Game(std::string name);
     void step();
     void reset();
-    void render_to_buf(void *buf, int w, int h, bool antialias);
+    void render_to_buf(void *buf, int w, int h, bool is_info, bool antialias);
     void parse_options(std::string name, VecOptions opt_vec);
 
     virtual ~Game() = 0;
@@ -120,7 +120,7 @@ class Game {
     virtual void game_init() = 0;
     virtual void game_reset() = 0;
     virtual void game_step() = 0;
-    virtual void game_draw(QPainter &p, const QRect &rect) = 0;
+    virtual void game_draw(QPainter &p, const QRect &rect, bool is_info) = 0;
     virtual void serialize(WriteBuffer *b);
     virtual void deserialize(ReadBuffer *b);
 

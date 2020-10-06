@@ -104,7 +104,7 @@ class StarPilotGame : public BasicAbstractGame {
         }
     }
 
-    void game_draw(QPainter &p, const QRect &rect) override {
+    void game_draw(QPainter &p, const QRect &rect, bool is_info) override {
         float scale = rect.height() / main_height;
 
         QColor bg_color = QColor(0, 0, 0);
@@ -120,7 +120,7 @@ class StarPilotGame : public BasicAbstractGame {
             tile_image(p, main_bg_images_ptr->at(background_index).get(), r_bg, 1);
         }
 
-        draw_foreground(p, rect);
+        draw_foreground(p, rect, is_info);
     }
 
     void handle_agent_collision(const std::shared_ptr<Entity> &obj) override {

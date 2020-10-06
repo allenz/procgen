@@ -24,7 +24,7 @@ class BasicAbstractGame : public Game {
     void observe() override;
     void game_step() override;
     void game_reset() override;
-    void game_draw(QPainter &p, const QRect &rect) override;
+    void game_draw(QPainter &p, const QRect &rect, bool is_info) override;
     void game_init() override;
     void serialize(WriteBuffer *b) override;
     void deserialize(ReadBuffer *b) override;
@@ -104,7 +104,7 @@ class BasicAbstractGame : public Game {
     QRectF get_abs_rect(float x, float y, float dx, float dy);
     QRectF get_object_rect(const std::shared_ptr<Entity> &obj);
 
-    void draw_foreground(QPainter &p, const QRect &rect);
+    void draw_foreground(QPainter &p, const QRect &rect, bool is_info);
 
     void step_entities(const std::vector<std::shared_ptr<Entity>> &given);
 
@@ -169,9 +169,9 @@ class BasicAbstractGame : public Game {
     void initialize_asset_if_necessary(int img_idx);
     void prepare_for_drawing(float rect_height);
     void draw_background(QPainter &p, const QRect &rect);
-    void draw_entity(QPainter &p, const std::shared_ptr<Entity> &to_draw);
-    void draw_entities(QPainter &p, const std::vector<std::shared_ptr<Entity>> &to_draw, int render_z = 0);
-    void draw_image(QPainter &p, QRectF &rect, float rotation, bool is_reflected, int img_idx, int theme, float alpha, float tile_ratio);
+    void draw_entity(QPainter &p, bool is_info, const std::shared_ptr<Entity> &to_draw);
+    void draw_entities(QPainter &p, bool is_info, const std::vector<std::shared_ptr<Entity>> &to_draw, int render_z = 0);
+    void draw_image(QPainter &p, QRectF &rect, bool is_info, float rotation, bool is_reflected, int img_idx, int theme, float alpha, float tile_ratio);
 
     bool sub_step(const std::shared_ptr<Entity> &obj, float _vx, float _vy, int depth);
     bool should_erase(const std::shared_ptr<Entity> &e1);

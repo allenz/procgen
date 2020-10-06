@@ -967,14 +967,14 @@ QImage *BasicAbstractGame::lookup_asset(int img_idx, bool is_reflected) {
     return assets->at(img_idx).get();
 }
 
-void BasicAbstractGame::draw_image(QPainter &p, QRectF &base_rect, float rotation, bool is_reflected, int base_type, int theme, float alpha, float tile_ratio) {
+void BasicAbstractGame::draw_image(QPainter &p, QRectF &base_rect, bool is_info, float rotation, bool is_reflected, int base_type, int theme, float alpha, float tile_ratio) {
     int img_type = image_for_type(base_type);
 
     if (img_type < 0) {
         return;
     }
 
-    if (options.use_seg_masks || options.use_valence || options.use_monochrome_assets || img_type >= USE_ASSET_THRESHOLD) {
+    if (!is_info && (options.use_seg_masks || options.use_valence || options.use_monochrome_assets) || img_type >= USE_ASSET_THRESHOLD) {
         int img_idx = img_type + theme * MAX_ASSETS;
         draw_grid_obj(p, base_rect, img_type, theme);
     } else {
@@ -1014,10 +1014,10 @@ void BasicAbstractGame::draw_grid_obj(QPainter &p, const QRectF &rect, int type,
     p.fillRect(rect, color_for_type(type, theme));
 }
 
-void BasicAbstractGame::draw_foreground(QPainter &p, const QRect &rect) {
+void BasicAbstractGame::draw_foreground(QPainter &p, const QRect &rect, bool is_info) {
     prepare_for_drawing(rect.height());
 
-    draw_entities(p, entities, -1);
+    draw_entities(p, is_info, entities, -1);
 
     int low_x, high_x, low_y, high_y;
 
@@ -1046,12 +1046,12 @@ void BasicAbstractGame::draw_foreground(QPainter &p, const QRect &rect) {
 
             QRectF r2 = get_screen_rect(x, y + 1, 1, 1, RENDER_EPS);
 
-            draw_image(p, r2, 0, false, type, theme, 1.0, 0.0);
+            draw_image(p, r2, is_info, 0, false, type, theme, 1.0, 0.0);
         }
     }
 
-    draw_entities(p, entities, 0);
-    draw_entities(p, entities, 1);
+    draw_entities(p, is_info, entities, 0);
+    draw_entities(p, is_info, entities, 1);
 
     if (has_useful_vel_info && (options.paint_vel_info)) {
         float infodim = rect.height() * .2;
@@ -1102,9 +1102,9 @@ void BasicAbstractGame::draw_background(QPainter &p, const QRect &rect) {
     }
 }
 
-void BasicAbstractGame::game_draw(QPainter &p, const QRect &rect) {
+void BasicAbstractGame::game_draw(QPainter &p, const QRect &rect, bool is_info) {
     draw_background(p, rect);
-    draw_foreground(p, rect);
+    draw_foreground(p, rect, is_info);
 }
 
 void BasicAbstractGame::match_aspect_ratio(const std::shared_ptr<Entity> &ent, bool match_width) {
@@ -1145,18 +1145,18 @@ bool BasicAbstractGame::should_draw_entity(const std::shared_ptr<Entity> &entity
     return true;
 }
 
-void BasicAbstractGame::draw_entity(QPainter &p, const std::shared_ptr<Entity> &ent) {
+void BasicAbstractGame::draw_entity(QPainter &p, bool is_info, const std::shared_ptr<Entity> &ent) {
     if (should_draw_entity(ent)) {
         QRectF r1 = get_object_rect(ent);
         float tile_ratio = get_tile_aspect_ratio(ent);
-        draw_image(p, r1, ent->rotation, ent->is_reflected, ent->image_type, ent->image_theme, ent->alpha, tile_ratio);
+        draw_image(p, r1, is_info, ent->rotation, ent->is_reflected, ent->image_type, ent->image_theme, ent->alpha, tile_ratio);
     }
 }
 
-void BasicAbstractGame::draw_entities(QPainter &p, const std::vector<std::shared_ptr<Entity>> &to_draw, int render_z) {
+void BasicAbstractGame::draw_entities(QPainter &p, bool is_info, const std::vector<std::shared_ptr<Entity>> &to_draw, int render_z) {
     for (const auto &m : to_draw) {
         if (m->render_z == render_z) {
-            draw_entity(p, m);
+            draw_entity(p, is_info, m);
         }
     }
 }
