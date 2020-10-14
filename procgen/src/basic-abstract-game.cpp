@@ -513,11 +513,15 @@ QColor BasicAbstractGame::color_for_type(int type, int theme) {
     if(options.use_valence) {
         int c;
         switch(get_valence(type)) {
-            case 0: c = 153; break; // bad
-            case 1: c = 102; break; // neutral, collidable
-            case 2: c = 204; break; // good
-            case 3: c = 255; break; // player
-            case 4: c = 51; break;  // non-blocking
+            case 0: c = 28; break; // bad
+            case 1: c = 57; break; // neutral, collidable
+            case 2: c = 85; break; // good
+            case 3: c = 113; break; // player
+            case 4: c = 142; break;  // non-blocking
+            case 5: c = 170; break;
+            case 6: c = 198; break;
+            case 7: c = 227; break;
+            case 8: c = 255; break;
         }
         return QColor(c, c, c);
     }

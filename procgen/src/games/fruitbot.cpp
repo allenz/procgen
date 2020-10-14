@@ -79,10 +79,14 @@ class FruitBotGame : public BasicAbstractGame {
     int get_valence(int type) override {
         switch(type) {
             case PLAYER: return 3;
-            case GOOD_OBJ:case PRESENT: return 2;
+            case GOOD_OBJ: return 2;
+            case PRESENT: return 8;
             case OUT_OF_BOUNDS_WALL: return 1;
-            case BAD_OBJ:case BARRIER:case LOCKED_DOOR:case LOCK: return 0;
+            case BAD_OBJ:return 0;
+            case BARRIER:return 7;
             case PLAYER_BULLET: return 4;
+            case LOCKED_DOOR: return 5;
+            case LOCK: return 6;
             default: fatal("fruitbot get_valence: unknown type %d\n", type);
         }
     }
