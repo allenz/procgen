@@ -9,6 +9,7 @@
 const std::string NAME = "coinrun";
 
 const float GOAL_REWARD = 10.0f;
+const float PENALTY = -4.0f;
 
 const int GOAL = 1;
 const int SAW = 2;
@@ -151,8 +152,10 @@ class CoinRun : public BasicAbstractGame {
         BasicAbstractGame::handle_agent_collision(obj);
 
         if (obj->type == ENEMY) {
+            step_data.reward += PENALTY;
             step_data.done = true;
         } else if (obj->type == SAW) {
+            step_data.reward += PENALTY;
             step_data.done = true;
         }
     }
@@ -175,6 +178,7 @@ class CoinRun : public BasicAbstractGame {
                 step_data.done = true;
                 step_data.level_complete = true;
             } else if (is_lava(type)) {
+                step_data.reward += PENALTY;
                 step_data.done = true;
             }
         }
