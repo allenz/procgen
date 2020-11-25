@@ -292,8 +292,13 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
                 case MemoryMode: s.shape[0] = s.shape[1] = 45; break;
                 default: s.shape[0] = s.shape[1] = 20;
             }
-        } else {
-            printf("Unrecognized env %s\n", env_name.c_str());
+        } else if(env_name == "starpilot") {
+            s.shape[0] = 16; s.shape[1] = 16;
+        } else if(env_name == "bossfight") {
+            s.shape[0] = 20; s.shape[1] = 20;
+        }
+         else {
+            printf("vecgame.cpp: unknown env %s\n", env_name.c_str());
         }
         s.ndim = 2,
         s.low.float32 = 0;

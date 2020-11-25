@@ -9,7 +9,7 @@
 const std::string NAME = "coinrun";
 
 const float GOAL_REWARD = 10.0f;
-const float PENALTY = -4.0f;
+const float PENALTY = -1.0f;
 
 const int GOAL = 1;
 const int SAW = 2;

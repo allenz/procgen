@@ -28,6 +28,8 @@ ENV_NAMES = [
     "ninja",
     "plunder",
     "starpilot",
+    "foodbot",
+    "foodbot_delay"
 ]
 
 EXPLORATION_LEVEL_SEEDS = {
