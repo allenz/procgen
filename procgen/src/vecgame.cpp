@@ -267,9 +267,7 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
             s.shape[0] = s.shape[1] = 64;
         } else if(env_name == "coinrun") {
             s.shape[0] = s.shape[1] = 64;
-        } else if(env_name == "foodbot" || env_name == "foodbot_delay") {
-            s.shape[0] = 60; s.shape[1] = 10;
-        } else if(env_name == "fruitbot") {
+        } else if(env_name == "fruitbot" || env_name.rfind("foodbot", 0) == 0) {
             s.shape[0] = 60;
             switch(distribution_mode){
                 case EasyMode: s.shape[1] = 10; break;

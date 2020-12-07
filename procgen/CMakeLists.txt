@@ -55,6 +55,8 @@ add_library(env
   src/games/coinrun_old.cpp
   src/games/coinrun.cpp
   src/games/foodbot.cpp
+  src/games/foodbot_test.cpp
+  src/games/foodbot_test2.cpp
   src/games/foodbot_delay.cpp
   src/games/fruitbot.cpp
   src/games/heist.cpp
