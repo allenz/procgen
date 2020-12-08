@@ -20,6 +20,8 @@ const int USE_ASSET_THRESHOLD = 100;
 const int MAX_ASSETS = USE_ASSET_THRESHOLD;
 const int MAX_IMAGE_THEMES = 30;
 
+const bool LOAD_COLORS = false;
+
 BasicAbstractGame::BasicAbstractGame(std::string name)
     : Game(name) {
     char_dim = 5;
@@ -116,7 +118,9 @@ void BasicAbstractGame::game_init() {
     asset_num_themes.clear();
 
     basic_assets.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, nullptr);
-    colors.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, nullptr);
+    if(LOAD_COLORS) {
+        colors.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, nullptr);
+    }
     basic_reflections.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, nullptr);
     asset_aspect_ratios.resize(USE_ASSET_THRESHOLD * MAX_IMAGE_THEMES, 0);
     asset_num_themes.resize(USE_ASSET_THRESHOLD, 0);
@@ -161,7 +165,7 @@ void BasicAbstractGame::initialize_asset_if_necessary(int img_idx) {
     }
 
     basic_assets[img_idx] = asset_ptr;
-    colors[img_idx] = get_color(names[theme]);
+    if(LOAD_COLORS) colors[img_idx] = get_color(names[theme]);
     asset_aspect_ratios[img_idx] = aspect_ratio;
     asset_num_themes[type] = num_themes;
 
@@ -527,6 +531,7 @@ QColor BasicAbstractGame::color_for_type(int type, int theme) {
     }
 
     if(options.use_seg_masks) {
+        fassert(LOAD_COLORS);
         int idx = type + theme * MAX_ASSETS;
         // initialize_asset_if_necessary(idx);
         if (colors[idx] == nullptr) {
