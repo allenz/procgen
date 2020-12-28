@@ -292,10 +292,13 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
             }
         } else if(env_name == "starpilot") {
             s.shape[0] = 16; s.shape[1] = 16;
-        } else if(env_name == "bossfight") {
+        } else if(env_name == "bossfight" || env_name == "dodgeball") {
             s.shape[0] = 20; s.shape[1] = 20;
-        }
-         else {
+        } else if(env_name == "chaser" and distribution_mode == HardMode) {
+            s.shape[0] = 13; s.shape[1] = 13;
+        } else if(env_name == "maze" and distribution_mode == HardMode) {
+            s.shape[0] = 25; s.shape[1] = 25;
+        } else {
             printf("vecgame.cpp: unknown env %s\n", env_name.c_str());
         }
         s.ndim = 2,
