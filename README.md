@@ -1,3 +1,25 @@
+## Allen's Procgen Fork
+
+This is a research fork of the [Procgen Benchmark](https://github.com/openai/procgen/) that exposes ground truth game information to the Python Gym API. Upon first use, it must be compiled by setting the `debug_mode` environment parameter to any nonzero value. (By default, Procgen recompiles itself every time if the source code is modified from the precompiled version.)
+
+Ground truth information is provided through three new keys in the info dict. These buffers are implemented in `basic-abstract-game.cpp` and `vecgame.cpp`.
+- **game**: a float vector of length 15 containing camera visibility, camera center, agent position and velocity, and the position and type of objects colliding with the agent.
+- **entities**: a float grid of length 64, where each row contains entity type, position, velocity, height and width, render depth, and image theme. If there are fewer than 64 entities, the entity list is terminated by a sentinel entity with type -1. Procgen typically uses entities to represent free-moving objects.
+- **grid**: a float grid of world_height by world_width, which provides the type of each grid object. The grid is typically used for block walls and other stationary objects. This is only implemented for some games since it requires manually setting the grid shape for each game.
+
+In addition, I implemented several variants of the fruitbot environment:
+- **foodbot.cpp**, fruitbot with an emphasis on object classification. It contains many more object textures and no walls. Good objects are food emoji and bad objects are animal emoji. Emoji are sourced from [Twitter Emoji](https://github.com/twitter/twemoji) library.
+- **foodbot_delay.cpp**, foodbot with delayed rewards. Even a minor delay seems to break PPO.
+- **foodbot_test.cpp**, **foodbot_test2.cpp**: foodbot with different test themes
+- **foodbot_whatsapp.cpp**: foodbot with WhatsApp emoji, used to assess generalization to entirely different image themes.
+
+Finally, I added a few new environment parameters, only implemented for a few games. They default to `False`, leaving the games unchanged from the Procgen originals.
+- `test_theme`: change to a different set of image themes, used to test generalization
+- `use_valence`: display objects as colored squares corresponding to universal object categories consistent between games
+- `use_seg_masks`: display objects as random colored squares specific to each game
+
+***
+
 **Status:** Maintenance (expect bug fixes and minor updates)
 
 # Procgen Benchmark
