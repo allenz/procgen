@@ -23,7 +23,7 @@ const int KEY_DURATION = 8;
 
 const float DOOR_ASPECT_RATIO = 3.25;
 
-const int DELAY = 20;
+const int DELAY = 5;
 
 class FoodBotDelayGame : public BasicAbstractGame {
   public:
