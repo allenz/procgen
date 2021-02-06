@@ -290,6 +290,11 @@ VecGame::VecGame(int _nenvs, VecOptions opts) {
                 case MemoryMode: s.shape[0] = s.shape[1] = 45; break;
                 default: s.shape[0] = s.shape[1] = 20;
             }
+        } else if(env_name == "miner") {
+            switch(distribution_mode) {
+                case HardMode: s.shape[0] = s.shape[1] = 20; break;
+                default: s.shape[0] = s.shape[1] = 10; break;
+            }
         } else if(env_name == "starpilot") {
             s.shape[0] = 16; s.shape[1] = 16;
         } else if(env_name == "bossfight" || env_name == "dodgeball") {
