@@ -104,6 +104,22 @@ class StarPilotGame : public BasicAbstractGame {
         }
     }
 
+    int get_valence(int type) override {
+        switch(type) {
+            case METEOR: return 0; // 5
+            case BULLET2: return 2; // 2
+            case BULLET3: return 2; // 3
+            case PLAYER: return 3;  // 0
+            case CLOUD: case FINISH_LINE: return 7; // 6
+            case BULLET_PLAYER: return 4; // 1
+            case FLYER: return 5; // 4
+            case TURRET: return 6; // 7
+            case FAST_FLYER: return 8; // 8
+            case EXPLOSION: case EXPLOSION2: case EXPLOSION3: case EXPLOSION4: case EXPLOSION5: return 1; // 54-58
+            default: fatal("starpilot get_valence: unknown type %d\n", type);
+        }
+    }
+
     void game_draw(QPainter &p, const QRect &rect, bool is_info) override {
         float scale = rect.height() / main_height;
 

@@ -95,6 +95,20 @@ class DodgeballGame : public BasicAbstractGame {
         return BasicAbstractGame::image_for_type(type);
     }
 
+    int get_valence(int type) override {
+        switch(type) {
+            case LAVA_WALL: return 0;  // 1
+            case DOOR_OPEN: return 2;  // 7
+            case PLAYER: return 3;  // 0
+            case PLAYER_BALL: return 4;  // 3
+            case ENEMY: return 5;  // 4
+            case DOOR: return 6;  // 5
+            case ENEMY_BALL: return 8;  // 6
+            case DUST_CLOUD: return 7;  // 8
+            default: fatal("dodgeball get_valence: unknown type %d\n", type);
+        }
+    }
+
     bool will_reflect(int src, int target) override {
         return BasicAbstractGame::will_reflect(src, target) || (src == ENEMY && (target == LAVA_WALL || target == out_of_bounds_object));
     }
