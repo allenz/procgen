@@ -1081,12 +1081,12 @@ void BasicAbstractGame::set_pen_brush_color(QPainter &p, QColor color, int thick
     p.setPen(pen);
 }
 
-void BasicAbstractGame::draw_background(QPainter &p, const QRect &rect) {
+void BasicAbstractGame::draw_background(QPainter &p, const QRect &rect, bool is_info) {
     p.fillRect(rect, QColor(0, 0, 0));
 
     prepare_for_drawing(rect.height());
 
-    if (!options.use_backgrounds) {
+    if ((!options.use_backgrounds) || (!is_info && options.use_valence)) {
         return;
     }
 
@@ -1112,7 +1112,7 @@ void BasicAbstractGame::draw_background(QPainter &p, const QRect &rect) {
 }
 
 void BasicAbstractGame::game_draw(QPainter &p, const QRect &rect, bool is_info) {
-    draw_background(p, rect);
+    draw_background(p, rect, is_info);
     draw_foreground(p, rect, is_info);
 }
 

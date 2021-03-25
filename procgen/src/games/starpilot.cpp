@@ -127,7 +127,7 @@ class StarPilotGame : public BasicAbstractGame {
 
         p.fillRect(rect, bg_color);
 
-        if (options.use_backgrounds) {
+        if (options.use_backgrounds && (is_info || !options.use_valence)) {
             float bg_k = 3;
             float t = cur_time;
             float x_off = -t * scale * hp_slow_v * 2 / char_dim;

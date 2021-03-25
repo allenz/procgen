@@ -168,7 +168,7 @@ class BasicAbstractGame : public Game {
     QImage *lookup_asset(int img_idx, bool is_reflected = false);
     void initialize_asset_if_necessary(int img_idx);
     void prepare_for_drawing(float rect_height);
-    void draw_background(QPainter &p, const QRect &rect);
+    void draw_background(QPainter &p, const QRect &rect, bool is_info);
     void draw_entity(QPainter &p, bool is_info, const std::shared_ptr<Entity> &to_draw);
     void draw_entities(QPainter &p, bool is_info, const std::vector<std::shared_ptr<Entity>> &to_draw, int render_z = 0);
     void draw_image(QPainter &p, QRectF &rect, bool is_info, float rotation, bool is_reflected, int img_idx, int theme, float alpha, float tile_ratio);
